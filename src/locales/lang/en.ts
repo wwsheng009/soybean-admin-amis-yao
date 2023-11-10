@@ -161,6 +161,7 @@ const locale: I18nType.Schema = {
       themeConfiguration: {
         title: 'Theme configuration',
         copy: 'Copy the current configuration',
+        save: 'Save the current configuration',
         reset: 'Reset the current configuration',
         resetSuccess: 'The configuration has been reset, please copy it again!',
         operateSuccess: 'Successful operation',

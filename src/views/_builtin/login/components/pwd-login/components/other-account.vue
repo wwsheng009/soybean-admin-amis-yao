@@ -35,20 +35,20 @@ const accounts: Account[] = [
   {
     key: 'super',
     label: userRoleLabels.super,
-    userName: 'Super',
-    password: 'super123'
+    userName: 'xiang@iqka.com',
+    password: 'A123456p+'
   },
   {
     key: 'admin',
     label: userRoleLabels.admin,
-    userName: 'Admin',
-    password: 'admin123'
+    userName: 'xiang@iqka.com',
+    password: 'A123456p+'
   },
   {
     key: 'user',
     label: userRoleLabels.user,
-    userName: 'User01',
-    password: 'user01123'
+    userName: 'xiang@iqka.com',
+    password: 'A123456p+'
   }
 ];
 

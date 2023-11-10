@@ -20,6 +20,8 @@ interface AppState {
   mixSiderFixed: boolean;
   /** socket.io 实例 */
   socket: Socket | null;
+  /** 设置项 */
+  setting: any;
 }
 
 export const useAppStore = defineStore('app-store', {
@@ -31,7 +33,9 @@ export const useAppStore = defineStore('app-store', {
     settingDrawerVisible: false,
     siderCollapse: false,
     mixSiderFixed: false,
-    socket: null
+    socket: null,
+    /** 设置项 */
+    setting: {}
   }),
   actions: {
     /**
@@ -105,6 +109,10 @@ export const useAppStore = defineStore('app-store', {
     /** 设置socket实例 */
     setSocket<T extends Socket = Socket>(socket: T) {
       this.socket = socket;
+    },
+    /** 设置设置项 */
+    setSetting(setting: any) {
+      this.setting = setting;
     }
   }
 });

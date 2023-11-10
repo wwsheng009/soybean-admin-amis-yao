@@ -161,6 +161,7 @@ const locale: I18nType.Schema = {
       themeConfiguration: {
         title: 'ការកំណត់ស្បែក',
         copy: 'ចម្លង',
+        save: 'Save configuration',
         reset: 'កំណត់ឡើងវិញ',
         resetSuccess: 'កំណត់ឡើងវិញជោគជ័យ, សូមចម្លងឯកសារស្បែកឡើងវិញ!',
         operateSuccess: 'សម្រាប់ការប្រើប្រាស់ជោគជ័យ',

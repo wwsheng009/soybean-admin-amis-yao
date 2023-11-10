@@ -469,6 +469,7 @@ declare namespace I18nType {
         themeConfiguration: {
           title: string;
           copy: string;
+          save: string;
           reset: string;
           resetSuccess: string;
           operateSuccess: string;

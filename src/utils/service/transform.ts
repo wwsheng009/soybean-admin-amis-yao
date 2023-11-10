@@ -21,7 +21,25 @@ export async function transformRequestData(requestData: any, contentType?: Union
 
   return data;
 }
+/**
+ * 请求数据的转换
+ * @param requestData - 请求数据
+ * @param contentType - 请求头的Content-Type
+ */
+export async function transformAmisRequestData(requestData: any, contentType?: UnionKey.ContentType) {
+  // application/json类型不处理
+  let data = requestData;
+  // form类型转换
+  if (contentType === 'application/x-www-form-urlencoded') {
+    data = stringify(requestData);
+  }
+  // form-data类型转换
+  if (contentType === 'multipart/form-data') {
+    data = await handleFormData(requestData);
+  }
 
+  return data;
+}
 async function handleFormData(data: Record<string, any>) {
   const formData = new FormData();
   const entries = Object.entries(data);

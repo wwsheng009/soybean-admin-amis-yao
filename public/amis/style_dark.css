@@ -1,0 +1,271 @@
+:root {
+  --borderRadius: 6px;
+  --Panel-borderWidth: 0;
+  --Panel-border: 1px solid rgba(0, 0, 0, .06);
+  --Page-title-fontSize: 20px;
+  --Page-title-fontWeight: 600;
+  --Page-title-lineHeight: 1;
+  --DropDown-menu-borderWidth: 0;
+  --Panel--default-bg: transparent;
+  --Panel--default-headingBorderColor: transparent;
+  --Panel-titleFontSize: var(--fontSizeLg);
+
+  --primary-onActive: var(--primary-color-suppl);
+  --info-onHover: var(--info-color-hover);
+  --info-onActive: var(--info-color-suppl);
+  --link-onClick-color: var(--primary-color-pressed);
+
+  --Button-paddingX: 15px;
+  --button-size-default-paddingRight: 15px;
+  --button-size-default-paddingLeft: 15px;
+  --Panel-footerPadding: 1rem var(--gap-base);
+  --Panel-headingPadding: var(--gap-base);
+  --Panel-boxShadow: 0 0 0;
+
+  --Avatar-bg: transparent;
+  --Panel-borderRadius: var(--borderRadius);
+
+}
+
+
+.amis-scope {
+  height: 100%;
+  background: transparent;
+  position: relative;
+}
+
+
+.amis-scope .cxd-Page {
+  height: auto;
+  background: transparent;
+}
+
+.amis-scope .cxd-Page-content {
+  padding: 0;
+}
+
+.amis-scope .cxd-Page-header {
+  display: flex;
+  align-items: end;
+  padding: var(--Page-header-paddingY) 0;
+}
+
+.amis-scope .cxd-Page-body {
+  padding: var(--Page-body-padding) 0;
+}
+
+.amis-scope .cxd-Page-subTitle {
+  padding-left: 12px;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.amis-scope .cxd-Page-main>.cxd-Page-header {
+  border-bottom: 0;
+}
+
+.amis-scope .cxd-Page-headerRow {
+  border-bottom: none;
+}
+
+.amis-scope .cxd-Crud {
+  padding: 15px;
+  background: white;
+  border-radius: var(--borderRadius);
+  border: 1px solid rgba(0, 0, 0, .06);
+}
+
+.amis-scope .cxd-Card {
+  border: 1px solid rgba(0, 0, 0, .06);
+  --un-shadow: var(--un-shadow-inset) 0 1px 2px 0 var(--un-shadow-color, rgba(0, 0, 0, .05));
+  box-shadow: var(--un-ring-offset-shadow), var(--un-ring-shadow), var(--un-shadow);
+}
+
+.amis-scope .cxd-Crud {
+  --un-shadow: var(--un-shadow-inset) 0 1px 2px 0 var(--un-shadow-color, rgba(0, 0, 0, .05));
+  box-shadow: var(--un-ring-offset-shadow), var(--un-ring-shadow), var(--un-shadow);
+}
+
+.amis-scope .cxd-Layout--folded .cxd-AsideNav-subList {
+  border-radius: var(--borderRadius);
+}
+
+.amis-scope .cxd-Remark>span {
+  background: transparent;
+}
+
+.amis-scope .base-filter {
+  background: #f7f7f9 !important;
+  box-shadow: 0 0 0 0 !important;
+}
+
+.amis-scope .base-filter .cxd-TextControl-input {
+  background: white;
+}
+
+.amis-scope .base-filter .cxd-Panel-footer {
+  background: #f7f7f9;
+}
+
+.amis-scope .cxd-Panel-heading {
+  border-width: 0;
+}
+
+.amis-scope .cxd-Panel {
+  border: 1px solid rgba(0, 0, 0, .06);
+  --un-shadow: var(--un-shadow-inset) 0 1px 2px 0 var(--un-shadow-color, rgba(0, 0, 0, .05));
+  box-shadow: var(--un-ring-offset-shadow), var(--un-ring-shadow), var(--un-shadow);
+}
+
+.amis-scope .cxd-Panel-footer {
+  border: 0 !important;
+}
+
+.amis-scope .cxd-RichTextControl {
+  border-radius: var(--borderRadius);
+}
+
+.amis-scope .cxd-Number--enhance .cxd-Number--enhance-left-icon .InputNumber-enhance-minus,
+.amis-scope .cxd-Number--enhance .cxd-Number--enhance-right-icon .InputNumber-enhance-plus {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.amis-scope .cxd-Table-table .cxd-TextControl-input {
+  background: white;
+}
+
+.dark .amis-scope .cxd-Table-table .cxd-TextControl-input {
+  background: var(--dark-card-background);
+}
+
+
+
+
+.dark {
+
+  --colors-neutral-fill-none: translate;
+  --colors-error-main: #dc3545;
+  --colors-error-1: #420312;
+  --colors-error-2: #69091c;
+  --colors-error-3: #8f1428;
+  --colors-error-4: #b52236;
+  --colors-error-5: #dc3545;
+  --colors-error-6: #ff6471;
+  --colors-error-7: #ff8b92;
+  --colors-error-8: #ffb1b5;
+  --colors-error-9: #ffd8da;
+  --colors-error-10: #ffe6e6;
+  --colors-warning-main: #ff9f0b;
+  --colors-warning-1: #663000;
+  --colors-warning-2: #8c4600;
+  --colors-warning-3: #b35f00;
+  --colors-warning-4: #d97b00;
+  --colors-warning-5: #ff9f0b;
+  --colors-warning-6: #ffb43b;
+  --colors-warning-7: #ffc96c;
+  --colors-warning-8: #ffdd9d;
+  --colors-warning-9: #ffefce;
+  --colors-warning-10: #fff7e6;
+  --colors-success-main: #32d74b;
+  --colors-success-1: #023d13;
+  --colors-success-2: #08631f;
+  --colors-success-3: #128a2c;
+  --colors-success-4: #20b03a;
+  --colors-success-5: #32d74b;
+  --colors-success-6: #57e36a;
+  --colors-success-7: #81f08e;
+  --colors-success-8: #affcb6;
+  --colors-success-9: #d8ffdb;
+  --colors-success-10: #e6ffe7;
+  --colors-link-main: #2296f3;
+  --colors-link-1: #002559;
+  --colors-link-2: #003980;
+  --colors-link-3: #0754a6;
+  --colors-link-4: #1272cc;
+  --colors-link-5: #2296f3;
+  --colors-link-6: #50b3ff;
+  --colors-link-7: #7bc8ff;
+  --colors-link-8: #a7dcff;
+  --colors-link-9: #d3eeff;
+  --colors-link-10: #e6f6ff;
+  --colors-info-main: #2296f3;
+  --colors-info-1: #002559;
+  --colors-info-2: #003980;
+  --colors-info-3: #0754a6;
+  --colors-info-4: #1272cc;
+  --colors-info-5: #2296f3;
+  --colors-info-6: #50b3ff;
+  --colors-info-7: #7bc8ff;
+  --colors-info-8: #a7dcff;
+  --colors-info-9: #d3eeff;
+  --colors-info-10: #e6f6ff;
+  --colors-other-main: #2468f2;
+  --colors-other-1: #001259;
+  --colors-other-2: #001e80;
+  --colors-other-3: #0832a6;
+  --colors-other-4: #144bcc;
+  --colors-other-5: #2468f2;
+  --colors-other-6: #528eff;
+  --colors-other-7: #7dadff;
+  --colors-other-8: #a8caff;
+  --colors-other-9: #d4e5ff;
+  --colors-other-10: #e6f0ff;
+  --colors-brand-1: #002566;
+  --colors-brand-2: #00388c;
+  --colors-brand-3: #004db3;
+  --colors-brand-4: #0065d9;
+  --colors-brand-5: #0983ff;
+  --colors-brand-6: #3ba0ff;
+  --colors-brand-7: #6cbaff;
+  --colors-brand-8: #9dd3ff;
+  --colors-brand-9: #ceeaff;
+  /* --colors-brand-10: #e6f4ff; */
+  --colors-brand-10: #636465;
+  --colors-neutral-text-11: #070e14;
+  --colors-neutral-text-10: #f3f1f1;
+  --colors-neutral-text-9: #303840;
+  --colors-neutral-text-8: #6c6c6c;
+  --colors-neutral-text-7: #84888c;
+  --colors-neutral-text-6: #b8bbbf;
+  --colors-neutral-text-5: #d4d7d9;
+  --colors-neutral-text-4: #e8e9eb;
+  --colors-neutral-text-3: #f2f4f5;
+  --colors-neutral-text-2: #f7f9fa;
+  --colors-neutral-text-1: #ffffff;
+  --colors-neutral-fill-none: transparent;
+  /* --colors-neutral-fill-11: #070e14; */
+  --colors-neutral-fill-11: rgb(24, 24, 28);
+  --colors-neutral-fill-10: #151e26;
+  --colors-neutral-fill-9: #303840;
+  --colors-neutral-fill-8: #5c6166;
+  --colors-neutral-fill-7: #84888c;
+  --colors-neutral-fill-6: #b8bbbf;
+  --colors-neutral-fill-5: #d4d7d9;
+  --colors-neutral-fill-4: #e8e9eb;
+  --colors-neutral-fill-3: #f2f4f5;
+  --colors-neutral-fill-2: #f7f9fa;
+  --colors-neutral-fill-1: #ffffff;
+  --colors-neutral-line-11: #070e14;
+  --colors-neutral-line-10: #151e26;
+  --colors-neutral-line-9: #303840;
+  --colors-neutral-line-8: #5c6166;
+  --colors-neutral-line-7: #84888c;
+  --colors-neutral-line-6: #b8bbbf;
+  --colors-neutral-line-5: #d4d7d9;
+  --colors-neutral-line-4: #e8e9eb;
+  --colors-neutral-line-3: #f2f4f5;
+  --colors-neutral-line-2: #f7f9fa;
+  --colors-neutral-line-1: #ffffff;
+
+}
+
+.amis-scope .cxd-Number--enhance .cxd-Number--enhance-left-icon .InputNumber-enhance-minus,
+.amis-scope .cxd-Number--enhance .cxd-Number--enhance-right-icon .InputNumber-enhance-plus {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

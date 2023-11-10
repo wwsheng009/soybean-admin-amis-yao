@@ -7,7 +7,7 @@ import {
   handleBackendError,
   handleResponseError,
   handleServiceResult,
-  transformRequestData
+  transformAmisRequestData
 } from '@/utils';
 import { clearAuthStorage } from '@/store/modules/auth/helpers';
 import { handleRefreshToken } from './helpers';
@@ -21,7 +21,7 @@ type RefreshRequestQueue = (config: AxiosRequestConfig) => void;
  * 封装axios请求类
  * @author Soybean<honghuangdc@gmail.com>
  */
-export default class CustomAxiosInstance {
+export default class AmisAxiosInstance {
   instance: AxiosInstance;
 
   backendConfig: Service.BackendResultConfig;
@@ -55,11 +55,32 @@ export default class CustomAxiosInstance {
   setInterceptor() {
     this.instance.interceptors.request.use(
       async config => {
+        const method = config.method;
+        if (method !== 'post' && method !== 'put' && method !== 'patch') {
+          if (config.data) {
+            config.params = config.data;
+          }
+        } else if (config.data && config.data instanceof FormData) {
+          // config.headers = config.headers || {};
+          // config.headers['Content-Type'] = 'multipart/form-data';
+        } else if (
+          config.data &&
+          typeof config.data !== 'string' &&
+          !(config.data instanceof Blob) &&
+          !(config.data instanceof ArrayBuffer)
+        ) {
+          config.headers = config.headers || {};
+          // data = JSON.stringify(data);
+          config.headers['Content-Type'] = 'application/json';
+        }
+
         const handleConfig = { ...config };
+
         if (handleConfig.headers) {
           // 数据转换
           const contentType = handleConfig.headers['Content-Type'] as UnionKey.ContentType;
-          handleConfig.data = await transformRequestData(handleConfig.data, contentType);
+
+          handleConfig.data = await transformAmisRequestData(handleConfig.data, contentType);
           // 设置token
           handleConfig.headers.Authorization = localStg.get('token') || '';
         }
@@ -100,7 +121,7 @@ export default class CustomAxiosInstance {
               amisLib.toast.success(backend.msg);
             }
             // return handleServiceResult(null, backend);
-            return backend;
+            return response;
             // return handleServiceResult(null, backend[dataKey]);
           }
           // token失效

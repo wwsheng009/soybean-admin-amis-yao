@@ -16,11 +16,14 @@
 import { dateZhCN, zhCN } from 'naive-ui';
 import { subscribeStore, useThemeStore } from '@/store';
 import { useGlobalEvents } from '@/composables';
+import { registerCustomComponent } from '@/views/amis/CustomComponent';
 
 const theme = useThemeStore();
 
 subscribeStore();
 useGlobalEvents();
+// 注册自定义组件
+registerCustomComponent();
 </script>
 
 <style scoped></style>

@@ -5,8 +5,11 @@ declare namespace ApiAuth {
   /** 返回的token和刷新token */
   interface Token {
     token: string;
+    // msg:  string;
+    // status: number;
     refreshToken: string;
   }
+
   /** 返回的用户信息 */
   type UserInfo = Auth.UserInfo;
 }

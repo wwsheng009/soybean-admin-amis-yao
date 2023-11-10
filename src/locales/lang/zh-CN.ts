@@ -1,6 +1,6 @@
 const locale: I18nType.Schema = {
   system: {
-    title: 'Soybean管理系统'
+    title: 'Yao管理系统'
   },
   common: {
     add: '添加',
@@ -160,6 +160,7 @@ const locale: I18nType.Schema = {
       },
       themeConfiguration: {
         title: '主题配置',
+        save: '保存当前配置',
         copy: '拷贝当前配置',
         reset: '重置当前配置',
         resetSuccess: '已重置配置，请重新拷贝！',

@@ -1,13 +1,16 @@
-import { unref, nextTick } from 'vue';
+import { unref, nextTick, ref } from 'vue';
 import { defineStore } from 'pinia';
+import { dateZhCN, zhCN, enUS, dateEnUS } from 'naive-ui';
 import { router } from '@/router';
-import { fetchLogin, fetchUserInfo } from '@/service';
+import { fetchLogin, fetchUserInfo, fetchSettings } from '@/service';
+import { subscribeStore, useAppStore, useThemeStore } from '@/store';
 import { useRouterPush } from '@/composables';
-import { localStg } from '@/utils';
-import { $t } from '@/locales';
+import { localStg, settings } from '@/utils';
+import { $t, setLocale } from '@/locales';
 import { useTabStore } from '../tab';
 import { useRouteStore } from '../route';
 import { getToken, getUserInfo, clearAuthStorage } from './helpers';
+const dateLocale = ref(dateZhCN);
 
 interface AuthState {
   /** 用户信息 */
@@ -93,6 +96,33 @@ export const useAuthStore = defineStore('auth-store', {
       localStg.set('token', token);
       localStg.set('refreshToken', refreshToken);
 
+      // 获取设置
+      fetchSettings().then((res: any) => {
+        subscribeStore();
+
+        const locale = ref(zhCN);
+        const theme = useThemeStore();
+        settings.setStore(useAppStore()).setSettings(res.data);
+
+        const info = res?.data?.system_theme_setting;
+        // let info = JSON.parse(res?.data?.system_theme_setting)
+        theme.mergeThemeSetting(info);
+
+        const loc = res?.data?.locale;
+
+        if (loc === 'en') {
+          locale.value = enUS;
+          dateLocale.value = dateEnUS;
+          setLocale('en');
+        } else {
+          locale.value = zhCN;
+          dateLocale.value = dateZhCN;
+          setLocale('zh-CN');
+        }
+
+        settings.dynamicAssetsHandler(res?.data?.assets);
+      });
+
       // 获取用户信息
       const { data } = await fetchUserInfo();
       if (data) {
@@ -116,6 +146,17 @@ export const useAuthStore = defineStore('auth-store', {
     async login(userName: string, password: string) {
       this.loginLoading = true;
       const { data } = await fetchLogin(userName, password);
+
+      // if (data && data.status != 0) {
+      // 	this.loginLoading = false;
+
+      //   if (data?.msg) {
+      //     window.$message?.error(data.msg);
+      //   }
+
+      // 	return true
+      // }
+
       if (data) {
         await this.handleActionAfterLogin(data);
       }
@@ -130,16 +171,16 @@ export const useAuthStore = defineStore('auth-store', {
 
       const accounts: Record<Auth.RoleType, { userName: string; password: string }> = {
         super: {
-          userName: 'Super',
-          password: 'super123'
+          userName: 'xiang@iqka.com',
+          password: 'A123456p+'
         },
         admin: {
-          userName: 'Admin',
-          password: 'admin123'
+          userName: 'xiang@iqka.com',
+          password: 'A123456p+'
         },
         user: {
-          userName: 'User01',
-          password: 'user01123'
+          userName: 'xiang@iqka.com',
+          password: 'A123456p+'
         }
       };
       const { userName, password } = accounts[userRole];

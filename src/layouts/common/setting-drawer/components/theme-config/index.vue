@@ -3,7 +3,10 @@
   <textarea id="themeConfigCopyTarget" v-model="dataClipboardText" class="absolute opacity-0" />
   <n-space vertical>
     <div ref="copyRef" data-clipboard-target="#themeConfigCopyTarget">
-      <n-button type="primary" :block="true">{{ $t('layout.settingDrawer.themeConfiguration.copy') }}</n-button>
+      <!-- <n-button type="primary" :block="true">{{ $t('layout.settingDrawer.themeConfiguration.copy') }}</n-button> -->
+      <n-button type="primary" :block="true" @click="save">
+        {{ $t('layout.settingDrawer.themeConfiguration.save') }}
+      </n-button>
     </div>
     <n-button type="warning" :block="true" @click="handleResetConfig">
       {{ $t('layout.settingDrawer.themeConfiguration.reset') }}
@@ -13,10 +16,10 @@
 
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch } from 'vue';
-import Clipboard from 'clipboard';
+// import Clipboard from 'clipboard';
+import { saveSettings } from '@/service';
 import { useThemeStore } from '@/store';
 import { $t } from '@/locales';
-
 defineOptions({ name: 'ThemeConfig' });
 
 const theme = useThemeStore();
@@ -34,17 +37,17 @@ function handleResetConfig() {
   window.$message?.success($t('layout.settingDrawer.themeConfiguration.resetSuccess'));
 }
 
-function clipboardEventListener() {
-  if (!copyRef.value) return;
-  const copy = new Clipboard(copyRef.value);
-  copy.on('success', () => {
-    window.$dialog?.success({
-      title: $t('layout.settingDrawer.themeConfiguration.operateSuccess'),
-      content: $t('layout.settingDrawer.themeConfiguration.copySuccess'),
-      positiveText: $t('layout.settingDrawer.themeConfiguration.confirmCopy')
-    });
-  });
-}
+// function clipboardEventListener() {
+//   if (!copyRef.value) return;
+//   const copy = new Clipboard(copyRef.value);
+//   copy.on('success', () => {
+//     window.$dialog?.success({
+//       title: $t('layout.settingDrawer.themeConfiguration.operateSuccess'),
+//       content: $t('layout.settingDrawer.themeConfiguration.copySuccess'),
+//       positiveText: $t('layout.settingDrawer.themeConfiguration.confirmCopy')
+//     });
+//   });
+// }
 
 const stopHandle = watch(
   () => theme.$state,
@@ -53,9 +56,20 @@ const stopHandle = watch(
   },
   { deep: true }
 );
+const save = () => {
+  const data = {
+    system_theme_setting: dataClipboardText.value
+  };
 
+  saveSettings(data).then(() => {
+    window.$message?.success('保存成功');
+    setTimeout(() => {
+      window.location.reload();
+    }, 700);
+  });
+};
 onMounted(() => {
-  clipboardEventListener();
+  // clipboardEventListener();
 });
 onUnmounted(() => {
   stopHandle();

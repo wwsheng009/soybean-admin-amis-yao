@@ -176,6 +176,12 @@ export const useThemeStore = defineStore('theme-store', {
     /** 设置页面过渡动画类型 */
     setPageAnimateMode(mode: UnionKey.ThemeAnimateMode) {
       this.page.animateMode = mode;
+    },
+    /** 合并来自服务端的主题配置 */
+    mergeThemeSetting(theme: any) {
+      Object.assign(this, theme);
+      // 缓存, 防止闪烁
+      this.cacheThemeSettings();
     }
   }
 });
