@@ -5,7 +5,7 @@ import unocss from '@unocss/vite';
 import progress from 'vite-plugin-progress';
 import VueDevtools from 'vite-plugin-vue-devtools';
 import pageRoute from '@soybeanjs/vite-plugin-vue-page-route';
-import legacy from '@vitejs/plugin-legacy';
+// import legacy from '@vitejs/plugin-legacy';
 import unplugin from './unplugin';
 // import mock from './mock';
 import visualizer from './visualizer';
@@ -28,34 +28,34 @@ export function setupVitePlugins(viteEnv: ImportMetaEnv): (PluginOption | Plugin
     ...unplugin(viteEnv),
     unocss(),
     // mock(viteEnv),不需要mock
-    progress(),
+    progress()
     // chrome mobile兼容处理，会多生成legacy文件
-    legacy({
-      targets: ['defaults', 'Chrome < 90', 'Safari  12.1', 'ios >= 12.3', 'edge < 15'],
-      additionalLegacyPolyfills: ['regenerator-runtime/runtime'],
-      renderLegacyChunks: true,
-      polyfills: [
-        'es.symbol',
-        'es.array.filter',
-        'es.promise',
-        'es.promise.finally',
-        'es/map',
-        'es/set',
-        'es.array.for-each',
-        'es.object.define-properties',
-        'es.object.define-property',
-        'es.object.get-own-property-descriptor',
-        'es.object.get-own-property-descriptors',
-        'es.object.keys',
-        'es.object.to-string',
-        'web.dom-collections.for-each',
-        'esnext.global-this',
-        'esnext.string.match-all',
-        'es.promise.all-settled',
-        'es.object.entries'
-      ],
-      modernPolyfills: ['es.promise.all-settled', 'es.object.entries', 'es/global-this']
-    })
+    // legacy({
+    //   targets: ['defaults', 'Chrome < 90', 'Safari  12.1', 'ios >= 12.3', 'edge < 15'],
+    //   additionalLegacyPolyfills: ['regenerator-runtime/runtime'],
+    //   renderLegacyChunks: true,
+    //   polyfills: [
+    //     'es.symbol',
+    //     'es.array.filter',
+    //     'es.promise',
+    //     'es.promise.finally',
+    //     'es/map',
+    //     'es/set',
+    //     'es.array.for-each',
+    //     'es.object.define-properties',
+    //     'es.object.define-property',
+    //     'es.object.get-own-property-descriptor',
+    //     'es.object.get-own-property-descriptors',
+    //     'es.object.keys',
+    //     'es.object.to-string',
+    //     'web.dom-collections.for-each',
+    //     'esnext.global-this',
+    //     'esnext.string.match-all',
+    //     'es.promise.all-settled',
+    //     'es.object.entries'
+    //   ],
+    //   modernPolyfills: ['es.promise.all-settled', 'es.object.entries', 'es/global-this']
+    // })
   ];
 
   if (viteEnv.VITE_VISUALIZER === 'Y') {
