@@ -1,12 +1,12 @@
 <template>
   <dark-mode-container class="global-header flex-y-center h-full" :inverted="theme.header.inverted">
     <global-logo v-if="showLogo" :show-title="true" class="h-full" :style="{ width: theme.sider.width + 'px' }" />
-    <div v-if="!showHeaderMenu" class="flex-1-hidden flex-y-center h-full">
+    <div v-if="!showHeaderMenu" class="flex-1 flex-y-center h-full">
       <menu-collapse v-if="showMenuCollapse || isMobile" />
       <global-breadcrumb v-if="theme.header.crumb.visible && !isMobile" />
     </div>
     <header-menu v-else />
-    <div class="flex justify-end h-full">
+    <div class="flex justify-end h-full toolbar">
       <global-search />
       <github-site />
       <full-screen />
@@ -59,5 +59,10 @@ const showButton = import.meta.env.PROD && import.meta.env.VITE_VERCEL !== 'Y';
 <style scoped>
 .global-header {
   box-shadow: 0 1px 2px rgb(0 21 41 / 8%);
+}
+
+.toolbar {
+  overflow: hidden;
+  white-space: nowrap;
 }
 </style>

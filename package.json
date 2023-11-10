@@ -97,6 +97,7 @@
     "@unocss/preset-uno": "0.56.5",
     "@unocss/transformer-directives": "0.56.5",
     "@unocss/vite": "0.56.5",
+    "@vitejs/plugin-legacy": "^4.1.1",
     "@vitejs/plugin-vue": "4.4.0",
     "@vitejs/plugin-vue-jsx": "3.0.2",
     "cross-env": "7.0.3",

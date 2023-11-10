@@ -61,5 +61,6 @@ initPage();
 <style scoped>
 #amis-region {
   overflow: inherit;
+  padding-top: 0;
 }
 </style>

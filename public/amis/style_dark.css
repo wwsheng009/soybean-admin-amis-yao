@@ -69,8 +69,8 @@
 }
 
 .amis-scope .cxd-Crud {
-  padding: 15px;
-  background: white;
+  /* padding: 15px; */
+  /* background: white; */
   border-radius: var(--borderRadius);
   border: 1px solid rgba(0, 0, 0, .06);
 }
@@ -94,18 +94,18 @@
   background: transparent;
 }
 
-.amis-scope .base-filter {
+/* .amis-scope .base-filter {
   background: #f7f7f9 !important;
   box-shadow: 0 0 0 0 !important;
-}
+} */
 
-.amis-scope .base-filter .cxd-TextControl-input {
+/* .amis-scope .base-filter .cxd-TextControl-input {
   background: white;
-}
+} */
 
-.amis-scope .base-filter .cxd-Panel-footer {
+/* .amis-scope .base-filter .cxd-Panel-footer {
   background: #f7f7f9;
-}
+} */
 
 .amis-scope .cxd-Panel-heading {
   border-width: 0;
@@ -133,15 +133,17 @@
   justify-content: center;
 }
 
-.amis-scope .cxd-Table-table .cxd-TextControl-input {
+/* .amis-scope .cxd-Table-table .cxd-TextControl-input {
   background: white;
-}
+} */
 
 .dark .amis-scope .cxd-Table-table .cxd-TextControl-input {
   background: var(--dark-card-background);
 }
 
-
+.amis-scope .cxd-Table-fixedTop {
+  z-index: 10;
+}
 
 
 .dark {
