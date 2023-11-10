@@ -34,6 +34,18 @@
   position: relative;
 }
 
+.amis-scope img,
+.amis-scope svg,
+.amis-scope video,
+.amis-scope canvas,
+.amis-scope audio,
+.amis-scope iframe,
+.amis-scope embed,
+.amis-scope object {
+  display: unset;
+}
+
+
 
 .amis-scope .cxd-Page {
   height: auto;
