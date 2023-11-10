@@ -46,9 +46,9 @@ export function handleAxiosError(axiosError: AxiosError) {
     ],
     [
       // 优先使用服务器的错误消息
-      Boolean(yaoError.code) && Boolean(yaoError.message),
+      Boolean(yaoError?.code) && Boolean(yaoError?.message),
       () => {
-        Object.assign(error, { code: yaoError.code, msg: yaoError.message });
+        Object.assign(error, { code: yaoError?.code, msg: yaoError?.message });
       }
     ],
     [
