@@ -23,6 +23,11 @@ export function handleAxiosError(axiosError: AxiosError) {
     code: DEFAULT_REQUEST_ERROR_CODE,
     msg: DEFAULT_REQUEST_ERROR_MSG
   };
+  type YaoErrorType = {
+    code: string;
+    message: string;
+  };
+  const yaoError: YaoErrorType = axiosError.response?.data as YaoErrorType;
 
   const actions: Common.StrategyAction[] = [
     [
@@ -37,6 +42,13 @@ export function handleAxiosError(axiosError: AxiosError) {
       axiosError.code === REQUEST_TIMEOUT_CODE && axiosError.message.includes('timeout'),
       () => {
         Object.assign(error, { code: REQUEST_TIMEOUT_CODE, msg: REQUEST_TIMEOUT_MSG });
+      }
+    ],
+    [
+      // 优先使用服务器的错误消息
+      Boolean(yaoError.code) && Boolean(yaoError.message),
+      () => {
+        Object.assign(error, { code: yaoError.code, msg: yaoError.message });
       }
     ],
     [
