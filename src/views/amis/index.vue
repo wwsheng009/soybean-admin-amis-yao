@@ -1,5 +1,5 @@
 <template>
-  <amis-renderer :schema="schema" :locale="localeRef" />
+  <amis-renderer :schema="schema" :locale="localeRef" class="amis-region" />
 </template>
 
 <script lang="ts" setup>
@@ -36,7 +36,7 @@ initPageSchema(amisRoute.schema_api).then(async res => {
 </script>
 
 <style scoped>
-#amis-region {
+.amis-region {
   overflow: inherit;
   padding-top: 0;
 }
