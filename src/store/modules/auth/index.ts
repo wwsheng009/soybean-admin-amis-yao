@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import { dateZhCN, zhCN, enUS, dateEnUS } from 'naive-ui';
 import { router } from '@/router';
 import { fetchLogin, fetchUserInfo, fetchSettings } from '@/service';
-import { subscribeStore, useAppStore, useThemeStore } from '@/store';
+import { useAppStore, useThemeStore } from '@/store';
 import { useRouterPush } from '@/composables';
 import { localStg, settings } from '@/utils';
 import { $t, setLocale } from '@/locales';
@@ -11,7 +11,7 @@ import { useTabStore } from '../tab';
 import { useRouteStore } from '../route';
 import { getToken, getUserInfo, clearAuthStorage } from './helpers';
 const dateLocale = ref(dateZhCN);
-
+// subscribeStore();
 interface AuthState {
   /** 用户信息 */
   userInfo: Auth.UserInfo;
@@ -98,8 +98,6 @@ export const useAuthStore = defineStore('auth-store', {
 
       // 获取设置
       fetchSettings().then((res: any) => {
-        subscribeStore();
-
         const locale = ref(zhCN);
         const theme = useThemeStore();
         settings.setStore(useAppStore()).setSettings(res.data);

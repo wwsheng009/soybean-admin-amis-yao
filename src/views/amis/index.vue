@@ -1,61 +1,38 @@
 <template>
-  <div id="amis-region"></div>
+  <amis-renderer :schema="schema" :locale="localeRef" />
 </template>
 
 <script lang="ts" setup>
 // 当前页面的路由信息
+import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { amisRequest, initPageSchema } from '@/service';
+import { initPageSchema } from '@/service';
 import { useAppStore } from '@/store';
-import { useRouterPush } from '@/composables';
 import { settings } from '@/utils';
 import { setupCustomComponent } from '@/views/amis/CustomComponent';
+import amisRenderer from '@/components/custom/amis-renderer.vue';
 
-const route = useRoute();
-const router = useRouterPush();
-// @ts-ignore
-const amis = amisRequire('amis/embed');
 // @ts-ignore
 const amisLib = amisRequire('amis');
 
 // 注册自定义组件
 setupCustomComponent(amisLib);
 
-const options = {
-  fetcher: ({ url, method, data, config, headers }: any) => {
-    // headers里有额外的定义
-    if (config) {
-      config.headers = config.headers || {};
-      Object.assign(config.headers, headers);
-    }
-
-    return amisRequest(url, method, data, config);
-  },
-  jumpTo: (location: string, action: any) => {
-    if (action?.blank) {
-      window.open(location);
-    } else {
-      router.routerPush(location);
-    }
-  }
-  // updateLocation: () => {}
+type AmisConfig = {
+  schema_api: string;
 };
+const schema = ref({});
+const route = useRoute();
 
-const render = (schema: any) => {
-  const locale = settings.setStore(useAppStore()).getSettingItem('locale') || 'zh-CN';
+const localeRef = ref('zh-CN');
+const locale = settings.setStore(useAppStore()).getSettingItem('locale') || 'zh-CN';
 
-  const config = {
-    locale: locale === 'en' ? 'en-US' : locale
-  };
+localeRef.value = locale === 'en' ? 'en-US' : locale;
 
-  amis.embed('#amis-region', schema, config, options);
-};
-
-const initPage = () => {
-  initPageSchema(route.path).then(res => render(res.data));
-};
-
-initPage();
+const amisRoute = route.meta as unknown as AmisConfig;
+initPageSchema(amisRoute.schema_api).then(async res => {
+  schema.value = res.data as object;
+});
 </script>
 
 <style scoped>

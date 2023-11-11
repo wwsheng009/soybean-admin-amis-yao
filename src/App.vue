@@ -30,7 +30,7 @@ useGlobalEvents();
 
 // 获取设置
 fetchSettings().then((res: any) => {
-  subscribeStore();
+  // subscribeStore();
 
   settings.setStore(useAppStore()).setSettings(res.data);
 

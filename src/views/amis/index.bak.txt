@@ -1,0 +1,142 @@
+<template>
+  <div id="amis-region"></div>
+  <amis-renderer :schema="schema" :locals="locals" />
+</template>
+
+<script lang="ts" setup>
+// 当前页面的路由信息
+import { onUnmounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { stringify } from 'qs';
+import { amisRequest, initPageSchema } from '@/service';
+import { useAppStore } from '@/store';
+import { useRouterPush } from '@/composables';
+import { settings } from '@/utils';
+import { setupCustomComponent } from '@/views/amis/CustomComponent';
+
+const route = useRoute();
+const router = useRouter();
+
+const routerPush = useRouterPush();
+// @ts-ignore
+const amis = amisRequire('amis/embed');
+// @ts-ignore
+const { normalizeLink } = amisRequire('amis');
+// @ts-ignore
+const amisLib = amisRequire('amis');
+
+type AmisInstance = {
+  amisRenderer: object;
+  unmount: () => void;
+  updateProps: (props: object) => void;
+};
+
+let amisInstance = {} as AmisInstance;
+
+// 注册自定义组件
+setupCustomComponent(amisLib);
+
+// function updateProps(this: any) {
+//   amisInstance?.updateProps({});
+// }
+
+function getLocation() {
+  return {
+    pathname: route.path,
+    hash: route.hash,
+    query: route.query,
+    search: `?${stringify(route.query)}`
+  };
+}
+const options = {
+  fetcher: ({ url, method, data, config, headers }: any) => {
+    // headers里有额外的定义
+    if (config) {
+      config.headers = config.headers || {};
+      Object.assign(config.headers, headers);
+    }
+
+    return amisRequest(url, method, data, config);
+  },
+  jumpTo: (toIn: string, action: any) => {
+    if (toIn === 'goBack') {
+      router.go(-1);
+      return;
+    }
+    const to = normalizeLink(toIn, getLocation());
+
+    if (action?.actionType === 'url') {
+      if (action.blank === false) {
+        routerPush.routerPush(to);
+      } else {
+        window.open(to);
+      }
+    }
+
+    // 主要是支持 nav 中的跳转
+    if (action && to && action.target) {
+      window.open(to, action.target);
+      return;
+    }
+
+    if (/^https?:\/\//.test(to)) {
+      window.location.replace(to);
+    } else {
+      routerPush.routerPush(to);
+    }
+  },
+  updateLocation: (locationIn: string, replace: boolean) => {
+    const loc = locationIn;
+    if (loc === 'goBack') {
+      router.go(-1);
+      return;
+    }
+
+    const location = normalizeLink(locationIn, getLocation());
+    if (replace) {
+      router.replace(location);
+    }
+  },
+
+  enableAMISDebug: true
+  // updateLocation: () => {}
+};
+
+const render = (schema: any) => {
+  const locale = settings.setStore(useAppStore()).getSettingItem('locale') || 'zh-CN';
+
+  const config = {
+    locale: locale === 'en' ? 'en-US' : locale,
+    data: {},
+    location: getLocation()
+  };
+  if (route.params && Object.keys(route.params).length > 0) {
+    Object.assign(config.data, { params: route.params });
+  }
+
+  // amisInstance = amis.embed('#amis-region', schema, config, options);
+  amisInstance = amis.embed('#amis-region', schema, config, options);
+};
+
+onUnmounted(() => {
+  amisInstance.unmount();
+});
+
+type AmisConfig = {
+  schema_api: string;
+};
+const initPage = () => {
+  const amisRoute = route.meta as unknown as AmisConfig;
+
+  initPageSchema(amisRoute.schema_api).then(res => render(res.data));
+};
+
+initPage();
+</script>
+
+<style scoped>
+#amis-region {
+  overflow: inherit;
+  padding-top: 0;
+}
+</style>

@@ -12,6 +12,7 @@ export const views: Record<
   'not-found': () => import('./_builtin/not-found/index.vue'),
   about: () => import('./about/index.vue'),
   amis: () => import('./amis/index.vue'),
+  'amis-demo_form': () => import('./amis-demo/form/index.vue'),
   'auth-demo_permission': () => import('./auth-demo/permission/index.vue'),
   'auth-demo_super': () => import('./auth-demo/super/index.vue'),
   component_button: () => import('./component/button/index.vue'),
