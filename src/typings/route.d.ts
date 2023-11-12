@@ -64,6 +64,8 @@ declare namespace AuthRoute {
     multi?: boolean;
     /** 是否固定在tab卡不可关闭  */
     affix?: boolean;
+    /** SchemaApi */
+    schemaApi?: string;
   }
 
   type Route<K extends AllRouteKey = AllRouteKey> = K extends AllRouteKey

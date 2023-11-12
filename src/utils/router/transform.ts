@@ -57,6 +57,9 @@ export function transformAuthRouteToVueRoute(item: AuthRoute.Route) {
       }
     };
     try {
+      if (item.component === 'amis' && !item.meta.schemaApi) {
+        item.component = 'self';
+      }
       if (item.component) {
         action[item.component]();
       } else {

@@ -123,12 +123,12 @@ onUnmounted(() => {
 });
 
 type AmisConfig = {
-  schema_api: string;
+  schemaApi: string;
 };
 const initPage = () => {
   const amisRoute = route.meta as unknown as AmisConfig;
 
-  initPageSchema(amisRoute.schema_api).then(res => render(res.data));
+  initPageSchema(amisRoute.schemaApi).then(res => render(res.data));
 };
 
 initPage();

@@ -19,7 +19,7 @@ const amisLib = amisRequire('amis');
 setupCustomComponent(amisLib);
 
 type AmisConfig = {
-  schema_api: string;
+  schemaApi: string;
 };
 const schema = ref({});
 const route = useRoute();
@@ -30,9 +30,11 @@ const locale = settings.setStore(useAppStore()).getSettingItem('locale') || 'zh-
 localeRef.value = locale === 'en' ? 'en-US' : locale;
 
 const amisRoute = route.meta as unknown as AmisConfig;
-initPageSchema(amisRoute.schema_api).then(async res => {
-  schema.value = res.data as object;
-});
+if (amisRoute && amisRoute.schemaApi && amisRoute.schemaApi !== '') {
+  initPageSchema(amisRoute.schemaApi).then(async res => {
+    schema.value = res.data as object;
+  });
+}
 </script>
 
 <style scoped>
