@@ -4,7 +4,7 @@ import { request, requestAmis } from '../request';
  * 初始化页面结构
  * @param path
  */
-export const initPageSchema = (path: string) => request.get(path);
+export const initPageSchema = (path: string) => requestAmis.get<{ data?: any }>(path);
 
 /**
  * amis请求

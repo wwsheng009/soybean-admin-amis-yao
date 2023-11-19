@@ -32,7 +32,11 @@
     "naive-admin",
     "NaiveUI-Admin",
     "naive-ui-admin",
-    "UnoCSS"
+    "UnoCSS",
+    "yao",
+    "amis",
+    "yao-amis",
+    "amis-yao"
   ],
   "scripts": {
     "dev": "cross-env VITE_SERVICE_ENV=dev vite",

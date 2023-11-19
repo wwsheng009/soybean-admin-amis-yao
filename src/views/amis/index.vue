@@ -32,7 +32,7 @@ localeRef.value = locale === 'en' ? 'en-US' : locale;
 const amisRoute = route.meta as unknown as AmisConfig;
 if (amisRoute && amisRoute.schemaApi && amisRoute.schemaApi !== '') {
   initPageSchema(amisRoute.schemaApi).then(async res => {
-    schema.value = res.data as object;
+    schema.value = res.data?.data;
   });
 }
 </script>

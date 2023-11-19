@@ -121,8 +121,8 @@ export function createAmisRequest(axiosConfig: AxiosRequestConfig, backendConfig
    * @param url - 请求地址
    * @param config - axios配置
    */
-  function get<T>(url: string, config?: AxiosRequestConfig) {
-    return asyncRequest<T>({ url, method: 'get', axiosConfig: config });
+  function get<T>(url: string, data?: any, config?: AxiosRequestConfig) {
+    return asyncRequest<T>({ url, method: 'get', data, axiosConfig: config });
   }
 
   /**
@@ -221,8 +221,8 @@ export function createHookRequest(axiosConfig: AxiosRequestConfig, backendConfig
    * @param url - 请求地址
    * @param config - axios配置
    */
-  function get<T>(url: string, config?: AxiosRequestConfig) {
-    return useRequest<T>({ url, method: 'get', axiosConfig: config });
+  function get<T>(url: string, data?: any, config?: AxiosRequestConfig) {
+    return useRequest<T>({ url, method: 'get', data, axiosConfig: config });
   }
 
   /**

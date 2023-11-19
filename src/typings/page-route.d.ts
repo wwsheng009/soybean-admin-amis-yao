@@ -23,6 +23,7 @@ declare namespace PageRoute {
     | 'login'
     | 'not-found'
     | 'about'
+    | 'amis-demo'
     | 'amis-demo_form'
     | 'amis'
     | 'auth-demo'

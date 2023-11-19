@@ -128,7 +128,7 @@ type AmisConfig = {
 const initPage = () => {
   const amisRoute = route.meta as unknown as AmisConfig;
 
-  initPageSchema(amisRoute.schemaApi).then(res => render(res.data));
+  initPageSchema(amisRoute.schemaApi).then(res => render(res.data?.data));
 };
 
 initPage();

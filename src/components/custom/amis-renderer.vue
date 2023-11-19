@@ -8,6 +8,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { stringify } from 'qs';
 import { amisRequest } from '@/service';
 import { useRouterPush } from '@/composables';
+import { attachmentAdpator } from '@/utils';
 
 interface Props {
   schema: object;
@@ -67,14 +68,20 @@ onMounted(() => {
       ...props.props
     },
     {
-      fetcher: ({ url, method, data, config, headers }: any) => {
+      fetcher: async (api: any) => {
+        const { url, method, data, responseType, config, headers } = api;
         // headers里有额外的定义
         if (config) {
           config.headers = config.headers || {};
           Object.assign(config.headers, headers);
         }
+        if (responseType) {
+          config.responseType = responseType;
+        }
 
-        return amisRequest(url, method, data, config);
+        let response = await amisRequest(url, method, data, config);
+        response = attachmentAdpator(response, api);
+        return response;
       },
       jumpTo: (toIn: string, action: { actionType: string; blank: boolean; target: string }) => {
         let to = toIn;
