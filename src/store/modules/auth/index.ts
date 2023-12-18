@@ -3,7 +3,8 @@ import { defineStore } from 'pinia';
 import { dateZhCN, zhCN, enUS, dateEnUS } from 'naive-ui';
 import { router } from '@/router';
 import { fetchLogin, fetchUserInfo, fetchSettings } from '@/service';
-import { useAppStore, useThemeStore } from '@/store';
+import type { XgenResLogin } from '@/store';
+import { xgenAfterLogin, useAppStore, useThemeStore } from '@/store';
 import { useRouterPush } from '@/composables';
 import { localStg, settings } from '@/utils';
 import { $t, setLocale } from '@/locales';
@@ -94,6 +95,7 @@ export const useAuthStore = defineStore('auth-store', {
       // 先把token存储到缓存中(后面接口的请求头需要token)
       const { token, refreshToken } = backendToken;
       localStg.set('token', token);
+
       localStg.set('refreshToken', refreshToken);
 
       // 获取设置
@@ -156,6 +158,7 @@ export const useAuthStore = defineStore('auth-store', {
       // }
 
       if (data) {
+        xgenAfterLogin(data as unknown as XgenResLogin);
         await this.handleActionAfterLogin(data);
       }
       this.loginLoading = false;
@@ -184,6 +187,7 @@ export const useAuthStore = defineStore('auth-store', {
       const { userName, password } = accounts[userRole];
       const { data } = await fetchLogin(userName, password);
       if (data) {
+        xgenAfterLogin(data as unknown as XgenResLogin);
         await this.loginByToken(data);
         resetRouteStore();
         initAuthRoute();

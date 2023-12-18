@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid/non-secure';
 import { request, requestAmis } from '../request';
 
 /**
@@ -14,12 +15,21 @@ export const initPageSchema = (path: string) => requestAmis.get<{ data?: any }>(
  * @param config 请求配置
  */
 // @ts-ignore
-export const amisRequest = (url, method, data, config) => requestAmis[method](url, data, config);
+export const amisRequest = (url, method, data, config) =>
+  // @ts-ignore
+  requestAmis[method](url, data, config);
 
 /**
  * 获取设置
  */
 export const fetchSettings = () => request.get('/api/v1/amis/setting');
+
+export const getAppInfoApi = () => {
+  const sid = nanoid() + new Date().valueOf();
+  const lang = window.navigator.language.toLowerCase();
+  const time = new Date().toLocaleString().replaceAll('/', '-');
+  return request.post('/api/__yao/app/setting', { sid, lang, time });
+};
 
 /**
  * 保存设置

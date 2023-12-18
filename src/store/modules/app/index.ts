@@ -2,6 +2,8 @@ import { nextTick } from 'vue';
 import { defineStore } from 'pinia';
 import type { Socket } from 'socket.io-client';
 import { LAYOUT_SCROLL_EL_ID } from '@soybeanjs/vue-materials';
+import { getAppInfoApi } from '@/service';
+import { setTokenStorageType } from '@/store/xgen';
 
 interface AppState {
   /** 滚动元素的id */
@@ -113,6 +115,14 @@ export const useAppStore = defineStore('app-store', {
     /** 设置设置项 */
     setSetting(setting: any) {
       this.setting = setting;
+    },
+
+    async getAppInfo() {
+      const { data } = (await getAppInfoApi()) as Service.RequestResult<App.Info>;
+      if (data) {
+        const token_storage = data.token?.storage || 'sessionStorage';
+        setTokenStorageType(token_storage);
+      }
     }
   }
 });

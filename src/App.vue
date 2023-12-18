@@ -28,6 +28,7 @@ const locale = ref(zhCN);
 subscribeStore();
 useGlobalEvents();
 
+useAppStore().getAppInfo();
 // 获取设置
 fetchSettings().then((res: any) => {
   // subscribeStore();
