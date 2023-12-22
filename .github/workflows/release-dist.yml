@@ -1,0 +1,62 @@
+name: Build and Release Soy Yao Amis Admin
+
+on:
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: "Version tags"
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "18" # specify your Node.js version
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          repository: wwsheng009/soybean-admin-amis-yao
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Build Project
+        run: pnpm run build
+
+      - name: List All Files
+        run: ls -lrt .
+
+      - name: Zip dist folder
+        run: zip -r soy-yao-admin.zip dist/
+
+      - name: Get version from package.json
+        id: package-version
+        run: echo "::set-output name=VERSION::$(jq -r .version package.json)"
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.package-version.outputs.VERSION }}
+          release_name: Release-${{ steps.package-version.outputs.VERSION }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./soy-yao-admin.zip
+          asset_name: soy-yao-admin-${{ steps.package-version.outputs.VERSION }}.zip
+          asset_content_type: application/zip
