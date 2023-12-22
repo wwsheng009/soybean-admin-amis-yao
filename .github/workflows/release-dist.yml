@@ -34,7 +34,9 @@ jobs:
         run: ls -lrt .
 
       - name: Zip dist folder
-        run: zip -r soy-yao-admin.zip dist/
+        run: |
+          cd dist
+          zip -r ../soy-yao-admin.zip .
 
       - name: Get version from package.json
         id: package-version
