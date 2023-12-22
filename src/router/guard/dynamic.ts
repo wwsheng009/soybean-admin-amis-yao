@@ -1,7 +1,7 @@
 import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
 import { routeName } from '@/router';
 import { useRouteStore } from '@/store';
-import { localStg } from '@/utils';
+import { getToken } from '@/store/modules/auth/helpers';
 
 /**
  * 动态路由
@@ -12,7 +12,7 @@ export async function createDynamicRouteGuard(
   next: NavigationGuardNext
 ) {
   const route = useRouteStore();
-  const isLogin = Boolean(localStg.get('token'));
+  const isLogin = Boolean(getToken);
 
   // 初始化权限路由
   if (!route.isInitAuthRoute) {

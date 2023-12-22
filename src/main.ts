@@ -4,7 +4,7 @@ import AppLoading from './components/common/app-loading.vue';
 import { setupDirectives } from './directives';
 import { setupRouter } from './router';
 import { setupAssets } from './plugins';
-import { setupStore, useAppStore } from './store';
+import { setupStore, useAppStore, useAuthStore } from './store';
 import { setupI18n } from './locales';
 
 async function setupApp() {
@@ -22,7 +22,8 @@ async function setupApp() {
   setupStore(app);
 
   await useAppStore().getAppInfo();
-
+  // update the user info when use sso
+  await useAuthStore().updateUserInfo();
   // vue custom directives
   setupDirectives(app);
 
