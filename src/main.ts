@@ -4,7 +4,7 @@ import AppLoading from './components/common/app-loading.vue';
 import { setupDirectives } from './directives';
 import { setupRouter } from './router';
 import { setupAssets } from './plugins';
-import { setupStore } from './store';
+import { setupStore, useAppStore } from './store';
 import { setupI18n } from './locales';
 
 async function setupApp() {
@@ -20,6 +20,8 @@ async function setupApp() {
 
   // store plugin: pinia
   setupStore(app);
+
+  await useAppStore().getAppInfo();
 
   // vue custom directives
   setupDirectives(app);

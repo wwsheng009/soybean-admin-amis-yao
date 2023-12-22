@@ -1,6 +1,7 @@
 import axios from 'axios';
 import type { AxiosResponse, AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 import { REFRESH_TOKEN_CODE } from '@/config';
+import { getXgenToken } from '@/store';
 import {
   localStg,
   handleAxiosError,
@@ -82,7 +83,7 @@ export default class AmisAxiosInstance {
 
           handleConfig.data = await transformAmisRequestData(handleConfig.data, contentType);
           // 设置token
-          handleConfig.headers.Authorization = localStg.get('token') || '';
+          handleConfig.headers.Authorization = `Bearer ${getXgenToken() || localStg.get('token') || ''}`;
         }
         return handleConfig;
       },

@@ -28,11 +28,9 @@ const locale = ref(zhCN);
 subscribeStore();
 useGlobalEvents();
 
-useAppStore().getAppInfo();
 // 获取设置
 fetchSettings().then((res: any) => {
   // subscribeStore();
-
   settings.setStore(useAppStore()).setSettings(res.data);
 
   const info = res?.data?.system_theme_setting;
@@ -50,8 +48,8 @@ fetchSettings().then((res: any) => {
     dateLocale.value = dateZhCN;
     setLocale('zh-CN');
   }
-
-  settings.dynamicAssetsHandler(res?.data?.assets);
+  const data = res?.data?.assets || { js: [], css: [], styles: [], scripts: [] };
+  settings.dynamicAssetsHandler(data);
 });
 
 // 注册自定义组件
