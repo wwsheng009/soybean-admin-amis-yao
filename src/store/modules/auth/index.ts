@@ -145,7 +145,7 @@ export const useAuthStore = defineStore('auth-store', {
      * update user info
      */
     async updateUserInfo() {
-      if (!localStg.get('userInfo')) {
+      if (!localStg.get('userInfo') && getToken()) {
         // 获取用户信息
         const { data } = await fetchUserInfo();
         if (data) {

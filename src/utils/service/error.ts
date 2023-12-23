@@ -8,6 +8,7 @@ import {
   REQUEST_TIMEOUT_CODE,
   REQUEST_TIMEOUT_MSG
 } from '@/config';
+import { clearAuthStorage } from '@/store/modules/auth/helpers';
 import { exeStrategyActions } from '../common';
 import { showErrorMsg } from './msg';
 
@@ -28,7 +29,10 @@ export function handleAxiosError(axiosError: AxiosError) {
     message: string;
   };
   const yaoError: YaoErrorType = axiosError.response?.data as YaoErrorType;
-
+  if (axiosError.response?.status && axiosError.response?.status === 403) {
+    clearAuthStorage();
+    window.location.reload();
+  }
   const actions: Common.StrategyAction[] = [
     [
       // 网路错误

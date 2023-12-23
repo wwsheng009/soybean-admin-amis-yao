@@ -38,7 +38,7 @@
         </n-button>
       </div>
     </n-space>
-    <other-account @login="handleLoginOtherAccount" />
+    <!-- <other-account @login="handleLoginOtherAccount" /> -->
   </n-form>
 </template>
 
@@ -49,7 +49,7 @@ import { loginModuleLabels } from '@/constants';
 import { useAuthStore } from '@/store';
 import { useRouterPush } from '@/composables';
 import { formRules } from '@/utils';
-import { OtherAccount } from './components';
+// import { OtherAccount } from './components';
 
 const auth = useAuthStore();
 const { login } = useAuthStore();
@@ -58,8 +58,8 @@ const { toLoginModule } = useRouterPush();
 const formRef = ref<HTMLElement & FormInst>();
 
 const model = reactive({
-  userName: 'xiang@iqka.com',
-  password: 'A123456p+'
+  userName: '',
+  password: ''
 });
 
 const rules: FormRules = {
@@ -76,10 +76,10 @@ async function handleSubmit() {
   login(userName, password);
 }
 
-function handleLoginOtherAccount(param: { userName: string; password: string }) {
-  const { userName, password } = param;
-  login(userName, password);
-}
+// function handleLoginOtherAccount(param: { userName: string; password: string }) {
+//   const { userName, password } = param;
+//   login(userName, password);
+// }
 </script>
 
 <style scoped></style>

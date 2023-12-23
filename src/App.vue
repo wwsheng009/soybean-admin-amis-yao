@@ -21,6 +21,7 @@ import { useGlobalEvents } from '@/composables';
 import { settings } from '@/utils';
 import { registerCustomComponent } from '@/views/amis/CustomComponent';
 import { setLocale } from '@/locales';
+import { getToken } from '@/store/modules/auth/helpers';
 const dateLocale = ref(dateZhCN);
 const theme = useThemeStore();
 const locale = ref(zhCN);
@@ -29,28 +30,30 @@ subscribeStore();
 useGlobalEvents();
 
 // 获取设置
-fetchSettings().then((res: any) => {
-  // subscribeStore();
-  settings.setStore(useAppStore()).setSettings(res.data);
+if (getToken()) {
+  fetchSettings().then((res: any) => {
+    // subscribeStore();
+    settings.setStore(useAppStore()).setSettings(res.data);
 
-  const info = res?.data?.system_theme_setting;
-  // let info = JSON.parse(res?.data?.system_theme_setting)
-  theme.mergeThemeSetting(info);
+    const info = res?.data?.system_theme_setting;
+    // let info = JSON.parse(res?.data?.system_theme_setting)
+    theme.mergeThemeSetting(info);
 
-  const loc = res?.data?.locale;
+    const loc = res?.data?.locale;
 
-  if (loc === 'en') {
-    locale.value = enUS;
-    dateLocale.value = dateEnUS;
-    setLocale('en');
-  } else {
-    locale.value = zhCN;
-    dateLocale.value = dateZhCN;
-    setLocale('zh-CN');
-  }
-  const data = res?.data?.assets || { js: [], css: [], styles: [], scripts: [] };
-  settings.dynamicAssetsHandler(data);
-});
+    if (loc === 'en') {
+      locale.value = enUS;
+      dateLocale.value = dateEnUS;
+      setLocale('en');
+    } else {
+      locale.value = zhCN;
+      dateLocale.value = dateZhCN;
+      setLocale('zh-CN');
+    }
+    const data = res?.data?.assets || { js: [], css: [], styles: [], scripts: [] };
+    settings.dynamicAssetsHandler(data);
+  });
+}
 
 // 注册自定义组件
 registerCustomComponent();
