@@ -31,7 +31,6 @@ export function handleAxiosError(axiosError: AxiosError) {
   const yaoError: YaoErrorType = axiosError.response?.data as YaoErrorType;
   if (axiosError.response?.status && axiosError.response?.status === 403) {
     clearAuthStorage();
-    window.location.reload();
   }
   const actions: Common.StrategyAction[] = [
     [

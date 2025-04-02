@@ -15,9 +15,6 @@ export function xgenLogout() {
   deleteXgenToken('token');
   deleteXgenToken('studio');
   localStorage.removeItem(`store`);
-
-  // history.replace('/login');
-  // window.location.reload();
 }
 
 /**

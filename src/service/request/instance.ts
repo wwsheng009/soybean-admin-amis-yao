@@ -105,7 +105,6 @@ export default class CustomAxiosInstance {
           // token失效
           if (backend?.code === 403) {
             clearAuthStorage();
-            window.location.reload();
           }
           // token失效, 刷新token
           if (REFRESH_TOKEN_CODE.includes(backend[codeKey])) {
