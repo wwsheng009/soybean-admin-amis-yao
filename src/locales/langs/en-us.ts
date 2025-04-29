@@ -161,6 +161,7 @@ const local: App.I18n.Schema = {
     403: 'No Permission',
     404: 'Page Not Found',
     500: 'Server Error',
+    amis: 'Amis Render Error',
     'iframe-page': 'Iframe',
     home: 'Home'
   },
@@ -169,6 +170,7 @@ const local: App.I18n.Schema = {
       common: {
         loginOrRegister: 'Login / Register',
         userNamePlaceholder: 'Please enter user name',
+        emailPlaceholder: 'Please enter email address',
         phonePlaceholder: 'Please enter phone number',
         codePlaceholder: 'Please enter verification code',
         passwordPlaceholder: 'Please enter password',

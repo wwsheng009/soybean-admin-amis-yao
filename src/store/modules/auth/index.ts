@@ -9,6 +9,8 @@ import { SetupStoreId } from '@/enum';
 import { $t } from '@/locales';
 import { useRouteStore } from '../route';
 import { useTabStore } from '../tab';
+import type { XgenResLogin } from '../xgen';
+import { xgenAfterLogin } from '../xgen';
 import { clearAuthStorage, getToken } from './shared';
 
 export const useAuthStore = defineStore(SetupStoreId.Auth, () => {
@@ -64,10 +66,8 @@ export const useAuthStore = defineStore(SetupStoreId.Auth, () => {
     startLoading();
 
     const { data: loginToken, error } = await fetchLogin(userName, password);
-
     if (!error) {
       const pass = await loginByToken(loginToken);
-
       if (pass) {
         await redirectFromLogin(redirect);
 
@@ -85,6 +85,8 @@ export const useAuthStore = defineStore(SetupStoreId.Auth, () => {
   }
 
   async function loginByToken(loginToken: Api.Auth.LoginToken) {
+    xgenAfterLogin(loginToken as unknown as XgenResLogin);
+
     // 1. stored in the localStorage, the later requests need it in headers
     localStg.set('token', loginToken.token);
     localStg.set('refreshToken', loginToken.refreshToken);

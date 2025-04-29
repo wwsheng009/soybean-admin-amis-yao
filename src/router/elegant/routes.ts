@@ -40,6 +40,15 @@ export const generatedRoutes: GeneratedRoute[] = [
     }
   },
   {
+    name: 'amis',
+    path: '/amis',
+    component: 'layout.base$view.amis',
+    meta: {
+      title: 'amis',
+      i18nKey: 'route.amis'
+    }
+  },
+  {
     name: 'home',
     path: '/home',
     component: 'layout.base$view.home',

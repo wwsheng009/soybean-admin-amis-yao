@@ -1,4 +1,4 @@
-export const REG_USER_NAME = /^[\u4E00-\u9FA5a-zA-Z0-9_-]{4,16}$/;
+export const REG_USER_NAME = /^[\u4E00-\u9FA5@a-zA-Z0-9_-]{4,16}$/;
 
 /** Phone reg */
 export const REG_PHONE =
@@ -7,9 +7,9 @@ export const REG_PHONE =
 /**
  * Password reg
  *
- * 6-18 characters, including letters, numbers, and underscores
+ * 6-18 characters, including letters, numbers, and 非字母或是非数字
  */
-export const REG_PWD = /^\w{6,18}$/;
+export const REG_PWD = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{6,18}$/; /// ^\w{6,18}$/;
 
 /** Email reg */
 export const REG_EMAIL = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;

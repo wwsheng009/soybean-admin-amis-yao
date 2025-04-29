@@ -418,6 +418,7 @@ declare namespace App {
           common: {
             loginOrRegister: string;
             userNamePlaceholder: string;
+            emailPlaceholder: string;
             phonePlaceholder: string;
             codePlaceholder: string;
             passwordPlaceholder: string;
@@ -570,7 +571,7 @@ declare namespace App {
       /** The backend service response code */
       code: string;
       /** The backend service response message */
-      msg: string;
+      message: string;
       /** The backend service response data */
       data: T;
     };

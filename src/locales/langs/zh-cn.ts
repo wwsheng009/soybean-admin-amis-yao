@@ -161,6 +161,7 @@ const local: App.I18n.Schema = {
     403: '无权限',
     404: '页面不存在',
     500: '服务器错误',
+    amis: 'Amis渲染异常',
     'iframe-page': '外链页面',
     home: '首页'
   },
@@ -169,6 +170,7 @@ const local: App.I18n.Schema = {
       common: {
         loginOrRegister: '登录 / 注册',
         userNamePlaceholder: '请输入用户名',
+        emailPlaceholder: '请输入邮箱地址',
         phonePlaceholder: '请输入手机号',
         codePlaceholder: '请输入验证码',
         passwordPlaceholder: '请输入密码',
@@ -253,7 +255,7 @@ const local: App.I18n.Schema = {
     },
     pwd: {
       required: '请输入密码',
-      invalid: '密码格式不正确，6-18位字符，包含字母、数字、下划线'
+      invalid: '密码格式不正确，6-18位字符，包含字母、数字'
     },
     confirmPwd: {
       required: '请输入确认密码',

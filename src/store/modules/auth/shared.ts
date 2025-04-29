@@ -1,4 +1,5 @@
 import { localStg } from '@/utils/storage';
+import { xgenLogout } from '../xgen';
 
 /** Get token */
 export function getToken() {
@@ -9,4 +10,5 @@ export function getToken() {
 export function clearAuthStorage() {
   localStg.remove('token');
   localStg.remove('refreshToken');
+  xgenLogout();
 }
