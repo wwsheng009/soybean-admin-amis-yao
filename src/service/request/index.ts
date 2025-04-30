@@ -93,7 +93,13 @@ export const request = createFlatRequest<App.Service.Response, RequestInstanceSt
       return null;
     },
     transformBackendResponse(response) {
-      if (response.data.data !== undefined) {
+      if (
+        typeof response.data === 'object' &&
+        response.data !== null &&
+        'data' in response.data &&
+        'msg' in response.data &&
+        'status' in response.data
+      ) {
         return response.data.data;
       }
       return response.data;

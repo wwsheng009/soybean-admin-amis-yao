@@ -56,11 +56,12 @@ onMounted(() => {
     props.schema,
     {
       data: {
-        locale: props.locale
+        locale: props.locale,
+        params: route.params,
+        __query: route.query
       },
       context,
       location,
-
       ...props.props
     },
     {

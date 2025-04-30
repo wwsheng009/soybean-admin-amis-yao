@@ -12,5 +12,27 @@ export const initPageSchema = (path: string) => request<object>({ url: path });
  */
 
 export function amisRequest({ url, method, data, config }: any) {
-  return request<{ data?: any }>({ url, method, data, ...config });
+  let requestData = data;
+  if (method !== 'post' && method !== 'put' && method !== 'patch') {
+    if (requestData) {
+      config.params = data;
+    }
+  } else if (data && data instanceof FormData) {
+    // config.headers = config.headers || {};
+    config.headers['Content-Type'] = 'multipart/form-data';
+  } else if (data && typeof data !== 'string' && !(data instanceof Blob) && !(data instanceof ArrayBuffer)) {
+    // data = JSON.stringify(data);
+    config.headers['Content-Type'] = 'application/json';
+  }
+  if (config.headers['Content-Type']?.toLowerCase().includes('json')) {
+    if (typeof data === 'string') {
+      try {
+        requestData = JSON.parse(data);
+      } catch (error) {
+        throw new Error(`JSON parse error${(error as Error).message}`);
+      }
+    }
+  }
+  // config 可能会包含method,以参数method为准
+  return request<{ data?: any }>({ ...config, url, method, data: requestData });
 }
