@@ -1,5 +1,5 @@
 import type { AxiosResponse } from 'axios';
-import { BACKEND_ERROR_CODE, createFlatRequest, createRequest } from '@sa/axios';
+import { BACKEND_ERROR_CODE, ERR_BAD_REQUEST, ERR_BAD_RESPONSE, createFlatRequest, createRequest } from '@sa/axios';
 import { useAuthStore } from '@/store/modules/auth';
 import { getToken } from '@/store/modules/auth/shared';
 import { getServiceBaseURL } from '@/utils/service';
@@ -111,9 +111,12 @@ export const request = createFlatRequest<App.Service.Response, RequestInstanceSt
       let backendErrorCode = '';
 
       // get backend error message and code
-      if (error.code === BACKEND_ERROR_CODE || error.code === 'ERR_BAD_REQUEST') {
+      if (error.code === BACKEND_ERROR_CODE || error.code === ERR_BAD_REQUEST) {
         message = error.response?.data?.message || message;
         backendErrorCode = String(error.response?.data?.code || '');
+      } else if (error.code === ERR_BAD_RESPONSE) {
+        message = error.response?.statusText || '';
+        backendErrorCode = `${error.response?.status}`;
       }
 
       // the error message is displayed in the modal

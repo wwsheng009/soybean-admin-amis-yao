@@ -103,6 +103,13 @@ onMounted(() => {
             data: response.error
           } as unknown as AmisResponse; // 显式类型断言
           response.data = payload as unknown as AmisResponse['data'];
+        } else {
+          payload = {
+            status: 0,
+            msg: '处理成功',
+            data: response.data
+          } as unknown as AmisResponse; // 显式类型断言
+          response.data = payload as unknown as AmisResponse['data'];
         }
         return attachmentAdpator(response, api);
       },

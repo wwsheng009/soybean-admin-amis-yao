@@ -1,3 +1,4 @@
+import { unref } from 'vue';
 import type {
   LocationQueryRaw,
   NavigationGuardNext,
@@ -9,7 +10,7 @@ import type { RouteKey, RoutePath } from '@elegant-router/types';
 import { useAuthStore } from '@/store/modules/auth';
 import { useRouteStore } from '@/store/modules/route';
 import { getToken } from '@/store/modules/auth/shared';
-import { getRouteName } from '@/router/elegant/transform';
+import { getRouteName, getRoutePath } from '@/router/elegant/transform';
 
 /**
  * create route guard
@@ -164,10 +165,18 @@ async function initRoute(to: RouteLocationNormalized): Promise<RouteLocationRaw 
 function handleRouteSwitch(to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) {
   // route with href
   if (to.meta.href) {
+    // 防止递归调用，主页入口的地址等于跳转的地址会引起无限调用。
+    const routeStore = useRouteStore();
+    const homeRoutePath = getRoutePath(unref(routeStore.routeHome));
+
+    if (homeRoutePath === to.meta.href) {
+      next();
+      return;
+    }
     window.open(to.meta.href, '_blank');
 
     next({ path: from.fullPath, replace: true, query: from.query, hash: to.hash });
-
+    // next();
     return;
   }
 
