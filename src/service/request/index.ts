@@ -1,7 +1,7 @@
 import type { AxiosResponse } from 'axios';
 import { BACKEND_ERROR_CODE, createFlatRequest, createRequest } from '@sa/axios';
 import { useAuthStore } from '@/store/modules/auth';
-import { localStg } from '@/utils/storage';
+import { getToken } from '@/store/modules/auth/shared';
 import { getServiceBaseURL } from '@/utils/service';
 import { $t } from '@/locales';
 import { getAuthorization, handleExpiredRequest, showErrorMsg } from './shared';
@@ -136,7 +136,7 @@ export const demoRequest = createRequest<App.Service.DemoResponse>(
       const { headers } = config;
 
       // set token
-      const token = localStg.get('token');
+      const token = getToken();
       const Authorization = token ? `Bearer ${token}` : null;
       Object.assign(headers, { Authorization });
 

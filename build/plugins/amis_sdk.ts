@@ -7,6 +7,7 @@ export function setupAmisSdkPlugin() {
     transformIndexHtml(html) {
       return html
         .replace(/\/soy-admin\/amis\/jssdk/g, '/amis-admin/jssdk')
+        .replace(/\/soy-admin\/scripts/g, '/amis-admin/scripts')
         .replace(/\/amis\/jssdk/g, '/amis-admin/jssdk');
     }
   };

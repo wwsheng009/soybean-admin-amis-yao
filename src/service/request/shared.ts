@@ -1,10 +1,11 @@
 import { useAuthStore } from '@/store/modules/auth';
+import { getToken } from '@/store/modules/auth/shared';
 import { localStg } from '@/utils/storage';
 import { fetchRefreshToken } from '../api';
 import type { RequestInstanceState } from './type';
 
 export function getAuthorization() {
-  const token = localStg.get('token');
+  const token = getToken();
   const Authorization = token ? `Bearer ${token}` : null;
 
   return Authorization;

@@ -1,9 +1,9 @@
 import { localStg } from '@/utils/storage';
-import { xgenLogout } from '../xgen';
+import { getXgenToken, xgenLogout } from '../xgen';
 
 /** Get token */
 export function getToken() {
-  return localStg.get('token') || '';
+  return localStg.get('token') || getXgenToken() || '';
 }
 
 /** Clear auth storage */

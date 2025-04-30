@@ -8,7 +8,7 @@ import type {
 import type { RouteKey, RoutePath } from '@elegant-router/types';
 import { useAuthStore } from '@/store/modules/auth';
 import { useRouteStore } from '@/store/modules/route';
-import { localStg } from '@/utils/storage';
+import { getToken } from '@/store/modules/auth/shared';
 import { getRouteName } from '@/router/elegant/transform';
 
 /**
@@ -31,7 +31,7 @@ export function createRouteGuard(router: Router) {
     const loginRoute: RouteKey = 'login';
     const noAuthorizationRoute: RouteKey = '403';
 
-    const isLogin = Boolean(localStg.get('token'));
+    const isLogin = Boolean(getToken());
     const needLogin = !to.meta.constant;
     const routeRoles = to.meta.roles || [];
 
@@ -95,7 +95,7 @@ async function initRoute(to: RouteLocationNormalized): Promise<RouteLocationRaw 
     return location;
   }
 
-  const isLogin = Boolean(localStg.get('token'));
+  const isLogin = Boolean(getToken());
 
   if (!isLogin) {
     // if the user is not logged in and the route is a constant route but not the "not-found" route, then it is allowed to access.
