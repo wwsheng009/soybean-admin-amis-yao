@@ -1,7 +1,7 @@
 import type { AxiosResponse } from 'axios';
-import { BACKEND_ERROR_CODE, ERR_BAD_REQUEST, ERR_BAD_RESPONSE, createFlatRequest, createRequest } from '@sa/axios';
+import { BACKEND_ERROR_CODE, createFlatRequest, createRequest } from '@sa/axios';
 import { useAuthStore } from '@/store/modules/auth';
-import { getToken } from '@/store/modules/auth/shared';
+import { localStg } from '@/utils/storage';
 import { getServiceBaseURL } from '@/utils/service';
 import { $t } from '@/locales';
 import { getAuthorization, handleExpiredRequest, showErrorMsg } from './shared';
@@ -9,6 +9,8 @@ import type { RequestInstanceState } from './type';
 
 const isHttpProxy = import.meta.env.DEV && import.meta.env.VITE_HTTP_PROXY === 'Y';
 const { baseURL, otherBaseURL } = getServiceBaseURL(import.meta.env, isHttpProxy);
+
+export { request as YaoRequest } from './yao';
 
 export const request = createFlatRequest<App.Service.Response, RequestInstanceState>(
   {
@@ -25,10 +27,9 @@ export const request = createFlatRequest<App.Service.Response, RequestInstanceSt
       return config;
     },
     isBackendSuccess(response) {
-      return response.status === 200;
       // when the backend response code is "0000"(default), it means the request is success
       // to change this logic by yourself, you can modify the `VITE_SERVICE_SUCCESS_CODE` in `.env` file
-      // return String(response.data.code) === import.meta.env.VITE_SERVICE_SUCCESS_CODE;
+      return String(response.data.code) === import.meta.env.VITE_SERVICE_SUCCESS_CODE;
     },
     async onBackendFail(response, instance) {
       const authStore = useAuthStore();
@@ -42,7 +43,7 @@ export const request = createFlatRequest<App.Service.Response, RequestInstanceSt
         handleLogout();
         window.removeEventListener('beforeunload', handleLogout);
 
-        request.state.errMsgStack = request.state.errMsgStack.filter(msg => msg !== response.data.message);
+        request.state.errMsgStack = request.state.errMsgStack.filter(msg => msg !== response.data.msg);
       }
 
       // when the backend response code is in `logoutCodes`, it means the user will be logged out and redirected to login page
@@ -54,15 +55,15 @@ export const request = createFlatRequest<App.Service.Response, RequestInstanceSt
 
       // when the backend response code is in `modalLogoutCodes`, it means the user will be logged out by displaying a modal
       const modalLogoutCodes = import.meta.env.VITE_SERVICE_MODAL_LOGOUT_CODES?.split(',') || [];
-      if (modalLogoutCodes.includes(responseCode) && !request.state.errMsgStack?.includes(response.data.message)) {
-        request.state.errMsgStack = [...(request.state.errMsgStack || []), response.data.message];
+      if (modalLogoutCodes.includes(responseCode) && !request.state.errMsgStack?.includes(response.data.msg)) {
+        request.state.errMsgStack = [...(request.state.errMsgStack || []), response.data.msg];
 
         // prevent the user from refreshing the page
         window.addEventListener('beforeunload', handleLogout);
 
         window.$dialog?.error({
           title: $t('common.error'),
-          content: response.data.message,
+          content: response.data.msg,
           positiveText: $t('common.confirm'),
           maskClosable: false,
           closeOnEsc: false,
@@ -93,16 +94,7 @@ export const request = createFlatRequest<App.Service.Response, RequestInstanceSt
       return null;
     },
     transformBackendResponse(response) {
-      if (
-        typeof response.data === 'object' &&
-        response.data !== null &&
-        'data' in response.data &&
-        'msg' in response.data &&
-        'status' in response.data
-      ) {
-        return response.data.data;
-      }
-      return response.data;
+      return response.data.data;
     },
     onError(error) {
       // when the request is fail, you can show error message
@@ -111,12 +103,9 @@ export const request = createFlatRequest<App.Service.Response, RequestInstanceSt
       let backendErrorCode = '';
 
       // get backend error message and code
-      if (error.code === BACKEND_ERROR_CODE || error.code === ERR_BAD_REQUEST) {
-        message = error.response?.data?.message || message;
+      if (error.code === BACKEND_ERROR_CODE) {
+        message = error.response?.data?.msg || message;
         backendErrorCode = String(error.response?.data?.code || '');
-      } else if (error.code === ERR_BAD_RESPONSE) {
-        message = error.response?.statusText || '';
-        backendErrorCode = `${error.response?.status}`;
       }
 
       // the error message is displayed in the modal
@@ -145,7 +134,7 @@ export const demoRequest = createRequest<App.Service.DemoResponse>(
       const { headers } = config;
 
       // set token
-      const token = getToken();
+      const token = localStg.get('token');
       const Authorization = token ? `Bearer ${token}` : null;
       Object.assign(headers, { Authorization });
 

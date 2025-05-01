@@ -1,4 +1,4 @@
-import { request } from '../request';
+import { YaoRequest as request } from '../request';
 
 /** get constant routes */
 export function fetchGetConstantRoutes() {

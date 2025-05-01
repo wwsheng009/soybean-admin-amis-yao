@@ -1,4 +1,4 @@
-import { request } from '../request';
+import { YaoRequest as request } from '../request';
 
 export const initPageSchema = (path: string) => request<object>({ url: path });
 
