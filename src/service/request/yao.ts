@@ -1,6 +1,6 @@
 import type { AxiosResponse } from 'axios';
 import type { FlatRequestInstance } from '@sa/axios';
-import { BACKEND_ERROR_CODE, ERR_BAD_REQUEST, ERR_BAD_RESPONSE, createFlatRequest } from '@sa/axios';
+import { createFlatRequest } from '@sa/axios';
 import { useAuthStore } from '@/store/modules/auth';
 import { getServiceBaseURL } from '@/utils/service';
 import { $t } from '@/locales';
@@ -127,13 +127,9 @@ export const request = createFlatRequest<App.Service.YaoResponse, RequestInstanc
       let backendErrorCode = '';
 
       // get backend error message and code
-      if (error.code === BACKEND_ERROR_CODE || error.code === ERR_BAD_REQUEST) {
-        message = error.response?.data?.message || message;
-        backendErrorCode = String(error.response?.data?.code || '');
-      } else if (error.code === ERR_BAD_RESPONSE) {
-        message = error.response?.statusText || '';
-        backendErrorCode = `${error.response?.status}`;
-      }
+
+      message = error.response?.data?.message || error.message || error.response?.statusText || '';
+      backendErrorCode = error.response?.data?.code || `${error.response?.status}` || '';
 
       // the error message is displayed in the modal
       if (handleNotAuthorizedLogout(backendErrorCode, error.response, request)) {

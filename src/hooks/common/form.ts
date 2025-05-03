@@ -24,7 +24,10 @@ export function useFormRules() {
     code: {
       pattern: REG_CODE_SIX,
       message: $t('form.code.invalid'),
-      trigger: 'change'
+      trigger: 'change',
+      transform(value) {
+        return value.code;
+      }
     },
     email: {
       pattern: REG_EMAIL,

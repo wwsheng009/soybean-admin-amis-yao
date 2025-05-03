@@ -99,10 +99,10 @@ export const useAuthStore = defineStore(SetupStoreId.Auth, () => {
    * @param password Password
    * @param [redirect=true] Whether to redirect after login. Default is `true`
    */
-  async function login(userName: string, password: string, redirect = true) {
+  async function login(loginInfo: { userName: string; password: string; captcha?: Api.Auth.Captcha }, redirect = true) {
     startLoading();
 
-    const { data: loginToken, error } = await fetchLogin(userName, password);
+    const { data: loginToken, error } = await fetchLogin(loginInfo.userName, loginInfo.password, loginInfo.captcha);
     if (!error) {
       const pass = await loginByToken(loginToken);
       if (pass) {
@@ -118,7 +118,7 @@ export const useAuthStore = defineStore(SetupStoreId.Auth, () => {
 
         window.$notification?.success({
           title: $t('page.login.common.loginSuccess'),
-          content: $t('page.login.common.welcomeBack', { userName: userInfo.userName }),
+          content: $t('page.login.common.welcomeBack', { userName: loginInfo.userName }),
           duration: 4500
         });
       }

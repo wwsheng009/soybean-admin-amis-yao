@@ -65,6 +65,13 @@ declare namespace Api {
       roles: string[];
       buttons: string[];
     }
+    interface CaptchaInfo {
+      captcha: Captcha;
+    }
+    interface Captcha {
+      id: string;
+      code: string;
+    }
   }
 
   /**

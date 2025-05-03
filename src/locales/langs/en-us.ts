@@ -174,6 +174,7 @@ const local: App.I18n.Schema = {
         phonePlaceholder: 'Please enter phone number',
         codePlaceholder: 'Please enter verification code',
         passwordPlaceholder: 'Please enter password',
+        captchaPlaceholder: 'Please enter captcha code',
         confirmPasswordPlaceholder: 'Please enter password again',
         codeLogin: 'Verification code login',
         confirm: 'Confirm',

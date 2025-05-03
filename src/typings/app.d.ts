@@ -422,6 +422,7 @@ declare namespace App {
             phonePlaceholder: string;
             codePlaceholder: string;
             passwordPlaceholder: string;
+            captchaPlaceholder: string;
             confirmPasswordPlaceholder: string;
             codeLogin: string;
             confirm: string;

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, reactive } from 'vue';
+import { computed, onMounted, reactive } from 'vue';
 import { loginModuleRecord } from '@/constants/app';
+import { fetchCaptcha } from '@/service/api';
 import { useAuthStore } from '@/store/modules/auth';
 import { useRouterPush } from '@/hooks/common/router';
 import { useFormRules, useNaiveForm } from '@/hooks/common/form';
@@ -18,12 +19,20 @@ interface FormModel {
   userName: string;
   email: string;
   password: string;
+  captcha: {
+    id: string;
+    code: string;
+  };
 }
 
 const model: FormModel = reactive({
   userName: 'Admin',
-  email: 'xiang@iqka.com',
-  password: 'A123456p+'
+  email: '',
+  password: '',
+  captcha: {
+    id: '',
+    code: ''
+  }
 });
 
 const rules = computed<Record<keyof FormModel, App.Global.FormRule[]>>(() => {
@@ -33,52 +42,31 @@ const rules = computed<Record<keyof FormModel, App.Global.FormRule[]>>(() => {
   return {
     userName: formRules.userName,
     email: formRules.email,
-    password: formRules.pwd
+    password: formRules.pwd,
+    captcha: formRules.code
   };
 });
 
 async function handleSubmit() {
   await validate();
-  await authStore.login(model.email, model.password);
+  await authStore.login({ userName: model.email, password: model.password, captcha: model.captcha });
+  await updateCaptcha();
 }
 
-type AccountKey = 'super' | 'admin' | 'user';
-
-interface Account {
-  key: AccountKey;
-  label: string;
-  email: string;
-  userName: string;
-  password: string;
-}
-
-const accounts = computed<Account[]>(() => [
-  {
-    key: 'super',
-    label: $t('page.login.pwdLogin.superAdmin'),
-    userName: 'Super',
-    email: 'xiang@iqka.com',
-    password: '123456'
-  },
-  {
-    key: 'admin',
-    label: $t('page.login.pwdLogin.admin'),
-    userName: 'Admin',
-    email: 'xiang@iqka.com',
-    password: '123456'
-  },
-  {
-    key: 'user',
-    label: $t('page.login.pwdLogin.user'),
-    userName: 'User',
-    email: 'xiang@iqka.com',
-    password: '123456'
+const captcha: Api.Auth.CaptchaInfo = reactive({
+  captcha: {
+    code: '',
+    id: ''
   }
-]);
-
-async function handleAccountLogin(account: Account) {
-  await authStore.login(account.email, account.password);
+});
+async function updateCaptcha() {
+  const { data } = await fetchCaptcha();
+  model.captcha.id = data?.captcha.id || '';
+  Object.assign(captcha, data);
 }
+onMounted(() => {
+  updateCaptcha();
+});
 </script>
 
 <template>
@@ -99,6 +87,14 @@ async function handleAccountLogin(account: Account) {
         :placeholder="$t('page.login.common.passwordPlaceholder')"
       />
     </NFormItem>
+    <NFormItem path="captcha">
+      <NInput
+        v-model:value="model.captcha.code"
+        type="text"
+        :placeholder="$t('page.login.common.captchaPlaceholder')"
+      />
+      <NImage :src="captcha.captcha.code" alt="captcha" :preview-disabled="true" @click.prevent="updateCaptcha" />
+    </NFormItem>
     <NSpace vertical :size="24">
       <div class="flex-y-center justify-between">
         <NCheckbox>{{ $t('page.login.pwdLogin.rememberMe') }}</NCheckbox>
@@ -117,12 +113,14 @@ async function handleAccountLogin(account: Account) {
           {{ $t(loginModuleRecord.register) }}
         </NButton>
       </div>
+      <!--
       <NDivider class="text-14px text-#666 !m-0">{{ $t('page.login.pwdLogin.otherAccountLogin') }}</NDivider>
       <div class="flex-center gap-12px">
         <NButton v-for="item in accounts" :key="item.key" type="primary" @click="handleAccountLogin(item)">
           {{ item.label }}
         </NButton>
       </div>
+      -->
     </NSpace>
   </NForm>
 </template>

@@ -1,6 +1,6 @@
 const local: App.I18n.Schema = {
   system: {
-    title: 'Soybean 管理系统',
+    title: 'Yao 管理系统',
     updateTitle: '系统版本更新通知',
     updateContent: '检测到系统有新版本发布，是否立即刷新页面？',
     updateConfirm: '立即刷新',
@@ -174,6 +174,7 @@ const local: App.I18n.Schema = {
         phonePlaceholder: '请输入手机号',
         codePlaceholder: '请输入验证码',
         passwordPlaceholder: '请输入密码',
+        captchaPlaceholder: '请输入验证码',
         confirmPasswordPlaceholder: '请再次输入密码',
         codeLogin: '验证码登录',
         confirm: '确定',
