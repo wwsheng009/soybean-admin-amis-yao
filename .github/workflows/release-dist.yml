@@ -40,7 +40,12 @@ jobs:
 
       - name: Get version from package.json
         id: package-version
-        run: echo "VERSION=$(jq -r .version package.json)"
+        run: |
+          VERSION=$(jq -r .version package.json)
+          if [ -z "$VERSION" ]; then 
+            VERSION=1.0.0
+          fi
+          echo VERSION=$VERSION >> $GITHUB_ENV
 
       # - name: Create Release
       #   id: create_release
