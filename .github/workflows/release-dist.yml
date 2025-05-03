@@ -74,7 +74,7 @@ jobs:
         with:
           tag_name: ${{ env.VERSION }}
           files: |
-            soy-yao-admin-${{ env.VERSION }}.zip
+            soy-yao-admin.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
