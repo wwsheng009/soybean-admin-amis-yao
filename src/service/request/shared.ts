@@ -52,6 +52,12 @@ export function showErrorMsg(state: RequestInstanceState, message: string) {
   if (!isExist) {
     state.errMsgStack.push(message);
   }
+  if (window.$message === undefined) {
+    const authStore = useAuthStore();
+    authStore.resetStore();
+    return;
+  }
+
   window.$message?.error(message, {
     onLeave: () => {
       state.errMsgStack = state.errMsgStack.filter(msg => msg !== message);

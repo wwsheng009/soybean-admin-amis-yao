@@ -36,7 +36,10 @@ function handleNotAuthorizedLogout(
 
     // prevent the user from refreshing the page
     window.addEventListener('beforeunload', handleLogout);
-
+    if (window.$dialog === undefined) {
+      logoutAndCleanup();
+      return true;
+    }
     window.$dialog?.error({
       title: $t('common.error'),
       content: response.data.message,
@@ -130,7 +133,7 @@ export const request = createFlatRequest<App.Service.YaoResponse, RequestInstanc
       // get backend error message and code
 
       message = error.response?.data?.message || error.message || error.response?.statusText || '';
-      backendErrorCode = error.response?.data?.code || `${error.response?.status}` || '';
+      backendErrorCode = String(error.response?.data?.code || `${error.response?.status}` || '');
 
       // the error message is displayed in the modal
       if (handleNotAuthorizedLogout(backendErrorCode, error.response, request)) {
