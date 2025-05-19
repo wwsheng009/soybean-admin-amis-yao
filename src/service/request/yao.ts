@@ -74,7 +74,8 @@ export const request = createFlatRequest<App.Service.YaoResponse, RequestInstanc
     },
     async onBackendFail(response, instance) {
       const authStore = useAuthStore();
-      const responseCode = String(response.data.code);
+      const backendErrorCode = response?.data?.code || `${response?.status}` || '';
+      const responseCode = String(backendErrorCode);
 
       function handleLogout() {
         authStore.resetStore();
