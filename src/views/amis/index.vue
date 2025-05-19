@@ -6,6 +6,9 @@ import { initPageSchema } from '@/service/api/amis';
 import { useAppStore } from '@/store/modules/app';
 import { setupCustomComponent } from '@/components/amis/CustomComponent';
 import AmisRender from '@/components/amis/amis-render.vue';
+defineOptions({
+  name: 'AmisView'
+});
 
 // @ts-expect-error use amis sdk
 const amisLib = amisRequire('amis');
