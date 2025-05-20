@@ -1,9 +1,6 @@
 // components/AmisHOC.ts
-import { computed, defineAsyncComponent, defineComponent, h, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
-import { initPageSchema } from '@/service/api/amis';
-import { useAppStore } from '@/store/modules/app';
-import { useThemeStore } from '@/store/modules/theme';
+import { defineAsyncComponent, defineComponent, h } from 'vue';
+import { useAmisSchema } from '@/hooks/common/amis';
 import { setupCustomComponent } from '@/components/amis/CustomComponent';
 import styles from './AmisHOC.module.css';
 // AMIS library
@@ -18,39 +15,13 @@ export function withDynamicName(dynamicName: string) {
   return defineComponent({
     name: dynamicName || 'AmisKeepAlive',
     setup() {
-      const schema = ref<object>({});
-      const route = useRoute();
-      const appStore = useAppStore();
+      const { schema, locale, theme } = useAmisSchema();
 
-      type AmisConfig = {
-        schemaApi: string;
-      };
-      const themeStore = useThemeStore();
-
-      const bgColor = computed(() => {
-        if (themeStore.darkMode) {
-          return 'dark';
-        }
-        return '';
-      });
-      const amisRoute = route.meta as unknown as AmisConfig;
-      if (amisRoute && amisRoute.schemaApi && amisRoute.schemaApi !== '') {
-        initPageSchema({ url: amisRoute.schemaApi, params: { theme: bgColor.value } }).then(async res => {
-          schema.value = res.data || {};
-        });
-      }
-      watch([() => themeStore.darkMode], () => {
-        if (amisRoute && amisRoute.schemaApi && amisRoute.schemaApi !== '') {
-          initPageSchema({ url: amisRoute.schemaApi, params: { theme: bgColor.value } }).then(async res => {
-            schema.value = res.data || {};
-          });
-        }
-      });
       // Return schema and locale for the lazy-loaded component
       return {
         schema,
-        locale: appStore.locale,
-        theme: bgColor.value
+        locale,
+        theme
       };
     }
   });
@@ -74,9 +45,9 @@ export function createLazyAmisComponent(dynamicName: string) {
               AmisRender,
               {
                 schema: (amisProps as any)?.schema?.value || {},
-                locale: (amisProps as any)?.locale,
+                locale: (amisProps as any)?.locale?.value,
                 class: styles.amis_region,
-                theme: (amisProps as any)?.theme
+                theme: (amisProps as any)?.theme?.value
               },
               slots
             );
