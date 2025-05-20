@@ -1,14 +1,18 @@
 <script setup lang="ts">
+import type { VNodeChild } from 'vue';
 import { onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { stringify } from 'qs';
+import Clipboard from 'clipboard';
 import { amisRequest } from '@/service/api/amis';
 import { useRouterPush } from '@/hooks/common/router';
 import { attachmentAdpator } from '@/utils/attachmentAdpator';
+import { $t } from '@/locales';
 
 interface Props {
   schema: object;
   locale?: string;
+  theme?: string;
   props?: object;
   env?: object;
 }
@@ -30,7 +34,7 @@ const amisInstance = ref({} as AmisInstance);
 const amisRenderer = ref<HTMLElement>();
 const route = useRoute();
 const context = reactive({
-  siteName: 'AMIS DEMO'
+  // siteName: 'AMIS DEMO'
 });
 const emit = defineEmits<Emits>();
 
@@ -51,13 +55,14 @@ function getLocation() {
 }
 
 onMounted(() => {
-  const instance = amis.embed(
+  const amisScoped = amis.embed(
     amisRenderer.value,
     props.schema,
     {
       data: {
         locale: props.locale,
         params: route.params,
+        __theme: props.theme,
         __query: route.query
       },
       context,
@@ -156,35 +161,72 @@ onMounted(() => {
           router.replace(loc);
         }
       },
-      enableAMISDebug: true,
+      notify: (type: string, msg: string | (() => VNodeChild)) => {
+        if (type === 'error') {
+          window.$message?.error(msg);
+        } else if (type === 'warn') {
+          window.$message?.warning(msg);
+        } else if (type === 'info') {
+          window.$message?.info(msg);
+        } else {
+          window.$message?.success(msg);
+        }
+      },
+      alert: (content: string | (() => VNodeChild)) => {
+        window.$message?.warning(content);
+      },
+      confirm: (content: any) => {
+        let result = false;
+        window.$dialog?.warning({
+          title: $t('amis.dialog.comfirmTitle'),
+          content,
+          positiveText: $t('amis.dialog.sure'),
+          negativeText: $t('amis.dialog.notSure'),
+          draggable: true,
+          onPositiveClick: () => {
+            result = true;
+          },
+          onNegativeClick: () => {
+            result = false;
+          }
+        });
+        return result;
+      },
+      copy: (contents: string, _options?: { silent: boolean; format?: string }) => {
+        const clipboard = new Clipboard(contents);
+
+        clipboard.on('success', () => {
+          window.$message?.success($t('common.copySuccessMsg'));
+        });
+      },
+      enableAMISDebug: import.meta.env.VITE_AMIS_DEBUG,
       ...props.env
     },
     () => {
       emit('ready', {
-        instance
+        instance: amisScoped
       });
     }
   );
 
-  amisInstance.value = instance;
+  amisInstance.value = amisScoped;
 });
 watch([() => props.schema], () => {
   amisInstance.value?.updateSchema(props.schema);
-  if (route.params && Object.keys(route.params).length > 0) {
-    const config = {
-      data: { params: route.params }
-    };
-    amisInstance.value?.updateProps(config);
-  }
 });
-watch([() => props.locale, () => props.props, () => router], () => {
-  amisInstance.value?.updateProps({
+watch([() => props.locale, () => props.props, () => router, () => props.theme], () => {
+  const config = {
     data: {
-      locale: props.locale
+      locale: props.locale,
+      params: route.params,
+      __theme: props.theme,
+      __query: route.query
     },
     context,
     ...props.props
-  });
+  };
+
+  amisInstance.value?.updateProps(config);
 });
 onBeforeUnmount(() => {
   amisInstance.value?.unmount();

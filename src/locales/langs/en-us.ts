@@ -44,6 +44,7 @@ const local: App.I18n.Schema = {
     update: 'Update',
     updateSuccess: 'Update Success',
     userCenter: 'User Center',
+    copySuccessMsg: 'Copy Success',
     yesOrNo: {
       yes: 'Yes',
       no: 'No'
@@ -292,6 +293,13 @@ const local: App.I18n.Schema = {
   },
   datatable: {
     itemCount: 'Total {total} items'
+  },
+  amis: {
+    dialog: {
+      comfirmTitle: 'Confirm',
+      sure: 'Sure',
+      notSure: 'Not Sure'
+    }
   }
 };
 

@@ -145,6 +145,12 @@
   background: white;
 } */
 
+.amis-scope .cxd-InputTable .cxd-Field--quickEditable svg {
+    color: white;
+}
+.dark .amis-scope .cxd-InputTable .cxd-Field--quickEditable svg {
+    color: white;
+}
 .dark .amis-scope .cxd-Table-table .cxd-TextControl-input {
   background: var(--dark-card-background);
 }

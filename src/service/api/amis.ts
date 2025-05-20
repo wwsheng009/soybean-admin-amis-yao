@@ -1,6 +1,6 @@
 import { YaoRequest as request } from '../request';
 
-export const initPageSchema = (path: string) => request<object>({ url: path });
+export const initPageSchema = ({ url, params }: any) => request<object>({ url, params });
 
 /**
  * amis请求

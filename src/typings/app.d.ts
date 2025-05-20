@@ -300,6 +300,13 @@ declare namespace App {
         updateConfirm: string;
         updateCancel: string;
       };
+      amis: {
+        dialog: {
+          comfirmTitle: string;
+          sure: string;
+          notSure: string;
+        };
+      };
       common: {
         action: string;
         add: string;
@@ -338,6 +345,7 @@ declare namespace App {
         update: string;
         updateSuccess: string;
         userCenter: string;
+        copySuccessMsg: string;
         yesOrNo: {
           yes: string;
           no: string;

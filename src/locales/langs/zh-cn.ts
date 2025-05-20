@@ -44,6 +44,7 @@ const local: App.I18n.Schema = {
     update: '更新',
     updateSuccess: '更新成功',
     userCenter: '个人中心',
+    copySuccessMsg: '复制成功',
     yesOrNo: {
       yes: '是',
       no: '否'
@@ -292,6 +293,13 @@ const local: App.I18n.Schema = {
   },
   datatable: {
     itemCount: '共 {total} 条'
+  },
+  amis: {
+    dialog: {
+      comfirmTitle: '确认',
+      sure: '确定',
+      notSure: '取消'
+    }
   }
 };
 
