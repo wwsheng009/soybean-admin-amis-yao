@@ -8,6 +8,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'src/**'  # 只有src目录下的文件变更才触发
 
 jobs:
   build-and-release:
