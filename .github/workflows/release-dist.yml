@@ -5,6 +5,9 @@ on:
     inputs:
       tags:
         description: "Version tags"
+  push:
+    branches:
+      - main
 
 jobs:
   build-and-release:
