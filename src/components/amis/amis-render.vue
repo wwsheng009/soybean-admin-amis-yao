@@ -4,7 +4,7 @@ import { onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { stringify } from 'qs';
 import Clipboard from 'clipboard';
-import { amisRequest } from '@/service/api/amis';
+import { amisRequestProxy } from '@/service/api/amis';
 import { useRouterPush } from '@/hooks/common/router';
 import { attachmentAdpator } from '@/utils/attachmentAdpator';
 import { $t } from '@/locales';
@@ -81,7 +81,7 @@ onMounted(() => {
           config.responseType = responseType;
         }
 
-        const response = await amisRequest({ url, method, data, config });
+        const response = await amisRequestProxy({ url, method, data, config });
         interface AmisResponse {
           status: number;
           msg: string;
@@ -104,7 +104,7 @@ onMounted(() => {
         } else if (response.error) {
           payload = {
             status: -1,
-            msg: response.error?.message ? response.error?.message : '处理失败',
+            msg: response.response?.data?.message || response.error?.message || '处理失败',
             data: response.error
           } as unknown as AmisResponse; // 显式类型断言
           response.data = payload as unknown as AmisResponse['data'];
@@ -161,7 +161,7 @@ onMounted(() => {
           router.replace(loc);
         }
       },
-      notify: (type: string, msg: string | (() => VNodeChild)) => {
+      notify: (type: string, msg: string) => {
         if (type === 'error') {
           window.$message?.error(msg);
         } else if (type === 'warn') {

@@ -57,7 +57,7 @@ function handleNotAuthorizedLogout(
   }
   return false;
 }
-export const request = createFlatRequest<App.Service.YaoResponse, RequestInstanceState>(
+export const YaoRequest = createFlatRequest<App.Service.YaoResponse, RequestInstanceState>(
   {
     baseURL,
     headers: {}
@@ -92,7 +92,7 @@ export const request = createFlatRequest<App.Service.YaoResponse, RequestInstanc
       }
 
       // when the backend response code is in `modalLogoutCodes`, it means the user will be logged out by displaying a modal
-      if (handleNotAuthorizedLogout(responseCode, response, request)) {
+      if (handleNotAuthorizedLogout(responseCode, response, YaoRequest)) {
         return null;
       }
 
@@ -100,7 +100,7 @@ export const request = createFlatRequest<App.Service.YaoResponse, RequestInstanc
       // the api `refreshToken` can not return error code in `expiredTokenCodes`, otherwise it will be a dead loop, should return `logoutCodes` or `modalLogoutCodes`
       const expiredTokenCodes = import.meta.env.VITE_SERVICE_EXPIRED_TOKEN_CODES?.split(',') || [];
       if (expiredTokenCodes.includes(responseCode)) {
-        const success = await handleExpiredRequest(request.state);
+        const success = await handleExpiredRequest(YaoRequest.state);
         if (success) {
           const Authorization = getAuthorization();
           Object.assign(response.config.headers, { Authorization });
@@ -136,7 +136,7 @@ export const request = createFlatRequest<App.Service.YaoResponse, RequestInstanc
       backendErrorCode = String(error.response?.data?.code || `${error.response?.status}` || '');
 
       // the error message is displayed in the modal
-      if (handleNotAuthorizedLogout(backendErrorCode, error.response, request)) {
+      if (handleNotAuthorizedLogout(backendErrorCode, error.response, YaoRequest)) {
         return;
       }
 
@@ -146,7 +146,98 @@ export const request = createFlatRequest<App.Service.YaoResponse, RequestInstanc
         return;
       }
 
-      showErrorMsg(request.state, message);
+      showErrorMsg(YaoRequest.state, message);
+    }
+  }
+);
+
+export const AmisRequest = createFlatRequest<App.Service.YaoResponse, RequestInstanceState>(
+  {
+    baseURL,
+    headers: {}
+  },
+  {
+    async onRequest(config) {
+      const Authorization = getAuthorization();
+      Object.assign(config.headers, { Authorization });
+
+      return config;
+    },
+    isBackendSuccess(response) {
+      return response.status === 200;
+      // when the backend response code is "0000"(default), it means the request is success
+      // to change this logic by yourself, you can modify the `VITE_SERVICE_SUCCESS_CODE` in `.env` file
+      // return String(response.data.code) === import.meta.env.VITE_SERVICE_SUCCESS_CODE;
+    },
+    async onBackendFail(response, instance) {
+      const authStore = useAuthStore();
+      const backendErrorCode = response?.data?.code || `${response?.status}` || '';
+      const responseCode = String(backendErrorCode);
+
+      function handleLogout() {
+        authStore.resetStore();
+      }
+
+      // when the backend response code is in `logoutCodes`, it means the user will be logged out and redirected to login page
+      const logoutCodes = import.meta.env.VITE_SERVICE_LOGOUT_CODES?.split(',') || [];
+      if (logoutCodes.includes(responseCode)) {
+        handleLogout();
+        return null;
+      }
+
+      // when the backend response code is in `modalLogoutCodes`, it means the user will be logged out by displaying a modal
+      if (handleNotAuthorizedLogout(responseCode, response, AmisRequest)) {
+        return null;
+      }
+
+      // when the backend response code is in `expiredTokenCodes`, it means the token is expired, and refresh token
+      // the api `refreshToken` can not return error code in `expiredTokenCodes`, otherwise it will be a dead loop, should return `logoutCodes` or `modalLogoutCodes`
+      const expiredTokenCodes = import.meta.env.VITE_SERVICE_EXPIRED_TOKEN_CODES?.split(',') || [];
+      if (expiredTokenCodes.includes(responseCode)) {
+        const success = await handleExpiredRequest(AmisRequest.state);
+        if (success) {
+          const Authorization = getAuthorization();
+          Object.assign(response.config.headers, { Authorization });
+
+          return instance.request(response.config) as Promise<AxiosResponse>;
+        }
+      }
+
+      return null;
+    },
+    transformBackendResponse(response) {
+      if (
+        typeof response.data === 'object' &&
+        response.data !== null &&
+        'data' in response.data &&
+        'msg' in response.data &&
+        'status' in response.data
+      ) {
+        return response.data.data;
+      }
+      return response.data;
+    },
+
+    onError(error) {
+      // when the request is fail, you can show error message
+
+      // const message = error.message;
+      let backendErrorCode = '';
+
+      // get backend error message and code
+
+      // message = error.response?.data?.message || error.message || error.response?.statusText || '';
+      backendErrorCode = String(error.response?.data?.code || `${error.response?.status}` || '');
+
+      // the error message is displayed in the modal
+      handleNotAuthorizedLogout(backendErrorCode, error.response, AmisRequest);
+
+      // when the token is expired, refresh token and retry request, so no need to show error message
+      // const expiredTokenCodes = import.meta.env.VITE_SERVICE_EXPIRED_TOKEN_CODES?.split(',') || [];
+      // if (expiredTokenCodes.includes(backendErrorCode)) {
+      // }
+
+      // showErrorMsg(AmisRequest.state, message);
     }
   }
 );

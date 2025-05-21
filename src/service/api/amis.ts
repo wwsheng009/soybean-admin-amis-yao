@@ -1,6 +1,6 @@
-import { YaoRequest as request } from '../request';
+import { AmisRequest, YaoRequest } from '../request';
 
-export const initPageSchema = ({ url, params }: any) => request<object>({ url, params });
+export const initPageSchema = ({ url, params }: any) => YaoRequest<object>({ url, params });
 
 /**
  * amis请求
@@ -11,7 +11,7 @@ export const initPageSchema = ({ url, params }: any) => request<object>({ url, p
  * @param config 请求配置
  */
 
-export function amisRequest({ url, method, data, config }: any) {
+export function amisRequestProxy({ url, method, data, config }: any) {
   let requestData = data;
   if (method !== 'post' && method !== 'put' && method !== 'patch') {
     if (requestData) {
@@ -34,5 +34,5 @@ export function amisRequest({ url, method, data, config }: any) {
     }
   }
   // config 可能会包含method,以参数method为准
-  return request<{ data?: any }>({ ...config, url, method, data: requestData });
+  return AmisRequest<{ data?: any }>({ ...config, url, method, data: requestData });
 }
