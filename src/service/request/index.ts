@@ -13,7 +13,7 @@ const { baseURL, otherBaseURL } = getServiceBaseURL(import.meta.env, isHttpProxy
 export { request as YaoRequest } from './yao';
 
 // export const request = createFlatRequest<App.Service.Response, RequestInstanceState>(
-export const request = createFlatRequest<App.Service.Response, App.Service.Response,RequestInstanceState>(
+export const request = createFlatRequest<App.Service.Response, App.Service.Response, RequestInstanceState>(
   {
     baseURL,
     headers: {

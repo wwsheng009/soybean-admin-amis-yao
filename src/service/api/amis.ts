@@ -29,7 +29,7 @@ export function amisRequest({ url, method, data, config }: any) {
       try {
         requestData = JSON.parse(data);
       } catch (error) {
-        throw new Error(`JSON parse error${(error as Error).message}`);
+        throw new Error(`JSON parse error${(error as Error).message}`, { cause: error });
       }
     }
   }
