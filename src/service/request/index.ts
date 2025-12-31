@@ -12,7 +12,8 @@ const { baseURL, otherBaseURL } = getServiceBaseURL(import.meta.env, isHttpProxy
 
 export { request as YaoRequest } from './yao';
 
-export const request = createFlatRequest<App.Service.Response, RequestInstanceState>(
+// export const request = createFlatRequest<App.Service.Response, RequestInstanceState>(
+export const request = createFlatRequest<App.Service.Response, App.Service.Response,RequestInstanceState>(
   {
     baseURL,
     headers: {
@@ -20,6 +21,13 @@ export const request = createFlatRequest<App.Service.Response, RequestInstanceSt
     }
   },
   {
+    defaultState: {
+      errMsgStack: [],
+      refreshTokenPromise: null
+    } as RequestInstanceState,
+    transform(response: AxiosResponse<App.Service.Response<any>>) {
+      return response.data.data;
+    },
     async onRequest(config) {
       const Authorization = getAuthorization();
       Object.assign(config.headers, { Authorization });
@@ -93,9 +101,6 @@ export const request = createFlatRequest<App.Service.Response, RequestInstanceSt
 
       return null;
     },
-    transformBackendResponse(response) {
-      return response.data.data;
-    },
     onError(error) {
       // when the request is fail, you can show error message
 
@@ -125,11 +130,14 @@ export const request = createFlatRequest<App.Service.Response, RequestInstanceSt
   }
 );
 
-export const demoRequest = createRequest<App.Service.DemoResponse>(
+export const demoRequest = createRequest(
   {
     baseURL: otherBaseURL.demo
   },
   {
+    transform(response: AxiosResponse<App.Service.DemoResponse>) {
+      return response.data.result;
+    },
     async onRequest(config) {
       const { headers } = config;
 
@@ -148,9 +156,6 @@ export const demoRequest = createRequest<App.Service.DemoResponse>(
     async onBackendFail(_response) {
       // when the backend response code is not "200", it means the request is fail
       // for example: the token is expired, refresh token and retry request
-    },
-    transformBackendResponse(response) {
-      return response.data.result;
     },
     onError(error) {
       // when the request is fail, you can show error message

@@ -13,7 +13,7 @@ const { baseURL } = getServiceBaseURL(import.meta.env, isHttpProxy);
 function handleNotAuthorizedLogout(
   responseCode: string,
   response: AxiosResponse<App.Service.YaoResponse<unknown>, any> | undefined,
-  orequest: FlatRequestInstance<RequestInstanceState, App.Service.YaoResponse<unknown>>
+  orequest: FlatRequestInstance<App.Service.YaoResponse<unknown>, App.Service.YaoResponse<unknown>, RequestInstanceState>
 ): boolean {
   if (!response) {
     return false;
@@ -57,7 +57,7 @@ function handleNotAuthorizedLogout(
   }
   return false;
 }
-export const request = createFlatRequest<App.Service.YaoResponse, RequestInstanceState>(
+export const request = createFlatRequest<App.Service.YaoResponse,App.Service.YaoResponse, RequestInstanceState>(
   {
     baseURL,
     headers: {}
@@ -119,7 +119,7 @@ export const request = createFlatRequest<App.Service.YaoResponse, RequestInstanc
         'msg' in response.data &&
         'status' in response.data
       ) {
-        return response.data.data;
+        return response.data.data as unknown as App.Service.YaoResponse<unknown>;
       }
       return response.data;
     },

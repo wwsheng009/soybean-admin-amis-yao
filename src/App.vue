@@ -25,7 +25,7 @@ const naiveDateLocale = computed(() => {
 
 const watermarkProps = computed<WatermarkProps>(() => {
   return {
-    content: themeStore.watermark.text,
+    content: themeStore.watermarkContent,
     cross: true,
     fullscreen: true,
     fontSize: 16,

@@ -7,23 +7,32 @@
 ---
 
 [![license](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
-[![github stars](https://img.shields.io/github/stars/soybeanjs/soybean-admin)](https://github.com/soybeanjs/soybean-admin)
-[![github forks](https://img.shields.io/github/forks/soybeanjs/soybean-admin)](https://github.com/soybeanjs/soybean-admin)
+[![github stars](https://img.shields.io/github/stars/honghuangdc/soybean-admin)](https://github.com/soybeanjs/soybean-admin)
+[![github forks](https://img.shields.io/github/forks/honghuangdc/soybean-admin)](https://github.com/soybeanjs/soybean-admin)
 [![gitee stars](https://gitee.com/honghuangdc/soybean-admin/badge/star.svg)](https://gitee.com/honghuangdc/soybean-admin)
 [![gitcode star](https://gitcode.com/soybeanjs/soybean-admin/star/badge.svg)](https://gitcode.com/soybeanjs/soybean-admin)
 
-<a href="https://hellogithub.com/repository/1298f27d5fe54959a16cf9686516ddb3" target="_blank"><img src="https://abroad.hellogithub.com/v1/widgets/recommend.svg?rid=1298f27d5fe54959a16cf9686516ddb3&claim_uid=IiDXWmP4TEntjbV" alt="Featured｜HelloGitHub" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+<div style="display: flex; gap: 12px; align-items: center;">
+  <a href="https://trendshift.io/repositories/7963" target="_blank"><img src="https://trendshift.io/api/badge/repositories/7963" alt="soybeanjs%2Fsoybean-admin | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
+  <a href="https://hellogithub.com/repository/1298f27d5fe54959a16cf9686516ddb3" target="_blank"><img src="https://abroad.hellogithub.com/v1/widgets/recommend.svg?rid=1298f27d5fe54959a16cf9686516ddb3&claim_uid=IiDXWmP4TEntjbV" alt="Featured｜HelloGitHub" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+</div>
 
 > [!NOTE]
 > 如果您觉得 `SoybeanAdmin`对您有所帮助，或者您喜欢我们的项目，请在 GitHub 上给我们一个 ⭐️。您的支持是我们持续改进和增加新功能的动力！感谢您的支持！
 
+> [!NOTE]
+> `SoybeanAdmin` 快速上手系列视频已在 [Bilibili](https://www.bilibili.com/video/BV1YKdRYXELC) 上线 [点击这里](https://www.bilibili.com/video/BV1YKdRYXELC) 前往查看
+
+> [!WARNING]
+> `SoybeanAdmin` 正在计划开发 `V2` 版本，详情见[计划清单](https://github.com/soybeanjs/soybean-admin/issues/767)
+
 ## 简介
 
-[`SoybeanAdmin`](https://github.com/soybeanjs/soybean-admin) 是一个清新优雅、高颜值且功能强大的后台管理模板，基于最新的前端技术栈，包括 Vue3, Vite6, TypeScript, Pinia 和 UnoCSS。它内置了丰富的主题配置和组件，代码规范严谨，实现了自动化的文件路由系统。此外，它还采用了基于 ApiFox 的在线Mock数据方案。`SoybeanAdmin` 为您提供了一站式的后台管理解决方案，无需额外配置，开箱即用。同样是一个快速学习前沿技术的最佳实践。
+[`SoybeanAdmin`](https://github.com/soybeanjs/soybean-admin) 是一个清新优雅、高颜值且功能强大的后台管理模板，基于最新的前端技术栈，包括 Vue3, Vite7, TypeScript, Pinia 和 UnoCSS。它内置了丰富的主题配置和组件，代码规范严谨，实现了自动化的文件路由系统。此外，它还采用了基于 ApiFox 的在线Mock数据方案。`SoybeanAdmin` 为您提供了一站式的后台管理解决方案，无需额外配置，开箱即用。同样是一个快速学习前沿技术的最佳实践。
 
 ## 特性
 
-- **前沿技术应用**：采用 Vue3, Vite6, TypeScript, Pinia 和 UnoCSS 等最新流行的技术栈。
+- **前沿技术应用**：采用 Vue3, Vite7, TypeScript, Pinia 和 UnoCSS 等最新流行的技术栈。
 - **清晰的项目架构**：采用 pnpm monorepo 架构，结构清晰，优雅易懂。
 - **严格的代码规范**：遵循 [SoybeanJS 规范](https://docs.soybeanjs.cn/zh/standard)，集成了eslint, prettier 和 simple-git-hooks，保证代码的规范性。
 - **TypeScript**： 支持严格的类型检查，提高代码的可维护性。
@@ -42,16 +51,22 @@
   - [预览地址](https://naive.soybeanjs.cn/)
   - [Github 仓库](https://github.com/soybeanjs/soybean-admin)
   - [Gitee 仓库](https://gitee.com/honghuangdc/soybean-admin)
+  - [Gitcode 仓库](https://gitcode.com/soybeanjs/soybean-admin)
 - **AntDesignVue 版本:**
   - [预览地址](https://antd.soybeanjs.cn/)
   - [Github 仓库](https://github.com/soybeanjs/soybean-admin-antd)
   - [Gitee 仓库](https://gitee.com/honghuangdc/soybean-admin-antd)
+  - [Gitcode 仓库](https://gitcode.com/soybeanjs/soybean-admin-antd)
 - **ElementPlus 版本:**
   - [预览地址](https://elp.soybeanjs.cn/)
   - [Github 仓库](https://github.com/soybeanjs/soybean-admin-element-plus)
+  - [Gitee 仓库](https://gitee.com/honghuangdc/soybean-admin-element-plus)
+  - [Gitcode 仓库](https://gitcode.com/soybeanjs/soybean-admin-element-plus)
 - **旧版:**
   - [预览地址](https://legacy.soybeanjs.cn/)
   - [Github 仓库](https://github.com/soybeanjs/soybean-admin/tree/legacy)
+  - [Gitee 仓库](https://gitee.com/honghuangdc/soybean-admin/tree/legacy)
+  - [Gitcode 仓库](https://gitcode.com/soybeanjs/soybean-admin/tree/legacy)
 
 
 ## 文档
@@ -111,13 +126,18 @@
 确保你的环境满足以下要求：
 
 - **git**: 你需要git来克隆和管理项目版本。
-- **NodeJS**: >=18.12.0，推荐 18.19.0 或更高。
-- **pnpm**: >= 8.7.0，推荐 8.14.0 或更高。
+- **NodeJS**: >=20.19.0，推荐 20.19.0 或更高。
+- **pnpm**: >= 10.5.0，推荐 10.5.0 或更高。
 
 **克隆项目**
 
 ```bash
+# github
 git clone https://github.com/soybeanjs/soybean-admin.git
+# gitee
+git clone https://gitee.com/honghuangdc/soybean-admin.git
+# gitcode
+git clone https://gitcode.com/soybeanjs/soybean-admin.git
 ```
 
 **安装依赖**
@@ -145,7 +165,7 @@ pnpm build
 
 ## 周边生态
 
-- [react-soybean-admin](https://github.com/mufeng889/react-soybean-admin): 基于SoybeanAdmin的React版本.
+- [skyroc-admin](https://github.com/Ohh-889/skyroc-admin): SoybeanAdmin的React版本实现.
 - [electron-mock-admin](https://github.com/lixin59/electron-mock-api): 一个 Mock Api 管理系统，帮助前端开发伙伴快速实现接口的 mock。
 - [T-Shell](https://github.com/TheBlindM/T-Shell): 是一个可配置命令提示的终端模拟器和 SSH 客户端。
 - [pea](https://github.com/haitang1894/pea) : 采用SpringBoot3.2 + JDK21、MyBatis-Plus、SpringSecurity安全框架等，适配 [soybean-admin](https://gitee.com/honghuangdc/soybean-admin) 开发的简单权限系统。
@@ -156,6 +176,8 @@ pnpm build
 - [FastSoyAdmin](https://github.com/sleep1223/fast-soy-admin): 基于 FastAPI+Vue3+Naive UI 的现代化轻量管理平台.
 - [ba](https://github.com/xiatianYa/Ba-Server): 基于goFrame框架开发的后端服务对接soybean-admin,适配动态路由,接口鉴权限。
 - [soybean-admin-go](https://github.com/WgoW/soybean-admin-go):基于gin+gorm框架开发的go语言后端服务对接soybean-admin的example分支,适配动态路由,接口鉴权限。
+
+更多周边生态请翻阅 [周边生态](https://docs.soybeanjs.cn/zh/awesome) 文档。
 
 
 ## 如何贡献
@@ -188,13 +210,21 @@ pnpm build
   <img src="https://contrib.rocks/image?repo=soybeanjs/soybean-admin" />
 </a>
 
+---
+
+以下是近一年中活跃度较高的贡献者，感谢各位的支持，让项目得以持续发展。
+
+<a href="https://openomy.com/soybeanjs/soybean-admin" target="_blank" style="display: block; width: 100%;" align="center">
+  <img src="https://www.openomy.com/svg?repo=soybeanjs/soybean-admin&chart=list&latestMonth=12" target="_blank" alt="Contribution Leaderboard" style="display: block; width: 100%;" />
+</a>
+
 ## 交流
 
 `SoybeanAdmin` 是完全开源免费的项目，在帮助开发者更方便地进行中大型管理系统开发，同时也提供微信和 QQ 交流群，使用问题欢迎在群内提问。
 
   <div>
   	<p>QQ交流群</p>
-    <img src="https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/uPic/qq-soybean-admin-4.jpg" style="width:200px" />
+    <img src="https://soybeanjs-1300612522.cos.ap-guangzhou.myqcloud.com/uPic/qq-soybean-admin-5.jpg" style="width:200px" />
   </div>
 	<!-- <div>
 		<p>微信群</p>
