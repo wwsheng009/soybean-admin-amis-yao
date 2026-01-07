@@ -2,7 +2,7 @@ import { computed, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { defineStore } from 'pinia';
 import { useLoading } from '@sa/hooks';
-import { fetchGetUserInfo, fetchLogin } from '@/service/api';
+import { fetchGetUserInfo, fetchYaoLogin, postVerifyEmailCode } from '@/service/api';
 import { useRouterPush } from '@/hooks/common/router';
 import { localStg } from '@/utils/storage';
 import { SetupStoreId } from '@/enum';
@@ -18,7 +18,7 @@ export const useAuthStore = defineStore(SetupStoreId.Auth, () => {
   const authStore = useAuthStore();
   const routeStore = useRouteStore();
   const tabStore = useTabStore();
-  const { toLogin, redirectFromLogin } = useRouterPush(false);
+  const { toLogin, redirectFromLogin, toggleLoginModule } = useRouterPush(false);
   const { loading: loginLoading, startLoading, endLoading } = useLoading();
 
   const token = ref(getToken());
@@ -96,14 +96,61 @@ export const useAuthStore = defineStore(SetupStoreId.Auth, () => {
    *
    * @param userName User name
    * @param password Password
+   * @param captchaId Captcha ID
+   * @param captcha Captcha code
    * @param [redirect=true] Whether to redirect after login. Default is `true`
    */
-  async function login(loginInfo: { userName: string; password: string; captcha?: Api.Auth.Captcha }, redirect = true) {
+  async function login(
+    loginInfo: {
+      userName: string;
+      password: string;
+      captcha_id?: string;
+      captcha?: string;
+    },
+    redirect = true
+  ) {
     startLoading();
 
-    const { data: loginToken, error } = await fetchLogin(loginInfo.userName, loginInfo.password, loginInfo.captcha);
-    if (!error) {
-      const pass = await loginByToken(loginToken);
+    // Step 1: Call verify interface to check if user exists
+    const { data: verifyData, error: verifyError } = await postVerifyEmailCode({
+      username: loginInfo.userName,
+      captcha_id: loginInfo.captcha_id || '',
+      captcha: loginInfo.captcha || '',
+      locale: 'zh-CN'
+    });
+
+    if (verifyError || !verifyData) {
+      window.$notification?.error?.({
+        title: $t('common.error'),
+        content: verifyError?.message || 'Verify failed',
+        duration: 4500
+      });
+      endLoading();
+      return;
+    }
+
+    // Step 2: Check if user exists
+    if (!verifyData.user_exists) {
+      // User does not exist, redirect to register page
+      toggleLoginModule('register');
+      endLoading();
+      return;
+    }
+
+    // Step 3: User exists, call login interface with access_token
+    const { data: loginToken, error: loginError } = await fetchYaoLogin(
+      loginInfo.password,
+      verifyData.access_token,
+      false,
+      'zh-CN'
+    );
+
+    if (!loginError && loginToken) {
+      const pass = await loginByToken({
+        token: loginToken.access_token,
+        refreshToken: loginToken.refresh_token
+      });
+
       if (pass) {
         // Check if the tab needs to be cleared
         const isClear = checkTabClear();
@@ -115,7 +162,7 @@ export const useAuthStore = defineStore(SetupStoreId.Auth, () => {
         }
         await redirectFromLogin(needRedirect);
 
-        window.$notification?.success({
+        window.$notification?.success?.({
           title: $t('page.login.common.loginSuccess'),
           content: $t('page.login.common.welcomeBack', { userName: loginInfo.userName }),
           duration: 4500
@@ -134,17 +181,27 @@ export const useAuthStore = defineStore(SetupStoreId.Auth, () => {
     // 1. stored in the localStorage, the later requests need it in headers
     localStg.set('token', loginToken.token);
     localStg.set('refreshToken', loginToken.refreshToken);
-
+    return true;
     // 2. get user info
-    const pass = await getUserInfo();
+    // const pass = await getUserInfo();
+    // // return true;
+    // if (pass) {
+    //   token.value = loginToken.token;
 
-    if (pass) {
-      token.value = loginToken.token;
+    //   return true;
+    // }
 
-      return true;
-    }
+    // return false;
+  }
 
-    return false;
+  async function loginByRegister(registerResponse: Api.Auth.RegisterResponse) {
+    // Convert RegisterResponse to LoginToken format for compatibility
+    const loginToken: Api.Auth.LoginToken = {
+      token: registerResponse.access_token,
+      refreshToken: registerResponse.refresh_token
+    };
+
+    return await loginByToken(loginToken);
   }
 
   async function getUserInfo() {
@@ -180,6 +237,7 @@ export const useAuthStore = defineStore(SetupStoreId.Auth, () => {
     loginLoading,
     resetStore,
     login,
-    initUserInfo
+    initUserInfo,
+    loginByRegister
   };
 });

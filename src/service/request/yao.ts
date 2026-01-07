@@ -65,7 +65,14 @@ export const request = createFlatRequest<any, any, RequestInstanceState>(
   {
     async onRequest(config) {
       const Authorization = getAuthorization();
-      Object.assign(config.headers, { Authorization });
+      // 使用传入请求中的header,合并并覆盖getAuthorization值
+      const mergedHeaders = {
+        ...(Authorization ? { Authorization } : {}),
+        ...config.headers
+      };
+
+      // 将合并后的headers分配给config.headers
+      Object.assign(config.headers, mergedHeaders);
 
       return config;
     },

@@ -19,22 +19,20 @@ interface FormModel {
   userName: string;
   email: string;
   password: string;
-  captcha: {
-    id: string;
-    code: string;
-  };
+  captcha: string;
 }
 
 const model: FormModel = reactive({
   userName: 'Admin',
   email: '',
   password: '',
-  captcha: {
-    id: '',
-    code: ''
-  }
+  captcha: ''
 });
-
+const captcha: Api.Auth.CaptchaInfo = reactive({
+  captcha_id: '',
+  captcha_image: '',
+  captcha: ''
+});
 const rules = computed<Record<keyof FormModel, App.Global.FormRule[]>>(() => {
   // inside computed to make locale reactive, if not apply i18n, you can define it without computed
   const { formRules } = useFormRules();
@@ -49,19 +47,18 @@ const rules = computed<Record<keyof FormModel, App.Global.FormRule[]>>(() => {
 
 async function handleSubmit() {
   await validate();
-  await authStore.login({ userName: model.email, password: model.password, captcha: model.captcha });
+  await authStore.login({
+    userName: model.email,
+    password: model.password,
+    captcha: model.captcha,
+    captcha_id: captcha.captcha_id
+  });
   await updateCaptcha();
 }
 
-const captcha: Api.Auth.CaptchaInfo = reactive({
-  captcha: {
-    code: '',
-    id: ''
-  }
-});
 async function updateCaptcha() {
   const { data } = await fetchCaptcha();
-  model.captcha.id = data?.captcha.id || '';
+  model.captcha = data?.captcha || '';
   Object.assign(captcha, data);
 }
 onMounted(() => {
@@ -88,12 +85,8 @@ onMounted(() => {
       />
     </NFormItem>
     <NFormItem path="captcha">
-      <NInput
-        v-model:value="model.captcha.code"
-        type="text"
-        :placeholder="$t('page.login.common.captchaPlaceholder')"
-      />
-      <NImage :src="captcha.captcha.code" alt="captcha" :preview-disabled="true" @click.prevent="updateCaptcha" />
+      <NInput v-model:value="model.captcha" type="text" :placeholder="$t('page.login.common.captchaPlaceholder')" />
+      <NImage :src="captcha.captcha_image" alt="captcha" :preview-disabled="true" @click.prevent="updateCaptcha" />
     </NFormItem>
     <NSpace vertical :size="24">
       <div class="flex-y-center justify-between">

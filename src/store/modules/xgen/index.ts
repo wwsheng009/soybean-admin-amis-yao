@@ -91,7 +91,7 @@ function xgenGetStorage(key: string, storageIn?: string): object | string | null
   return s;
 }
 export interface XgenResLogin {
-  expires_at: number;
+  expires_in: number;
   menus: { items: Array<App.Global.Menu>; setting: Array<App.Global.Menu> };
   token: string;
   user: { name: string; email: string };
@@ -107,36 +107,36 @@ export function xgenAfterLogin(payload: XgenResLogin) {
   const token = encodeURIComponent(payload.token);
 
   const newDate = new Date();
-  if (payload.expires_at) {
-    newDate.setTime(payload.expires_at * 1000);
+  if (payload.expires_in) {
+    newDate.setTime(payload.expires_in * 1000);
   } else {
-    newDate.setTime(newDate.getTime() + 24 * 60 * 60 * 1000);
+    newDate.setTime(newDate.getTime() + 2 * 60 * 60 * 1000);
   }
 
-  let expires = `expires=${newDate.toUTCString()}`;
-  document.cookie = `token=${token};${expires};path=/`;
-  document.cookie = `username=${payload.user.name};${expires};path=/`;
-  document.cookie = `email=${payload.user.email};${expires};path=/`;
+  const expires = `expires=${newDate.toUTCString()}`;
+  document.cookie = `__Host-access_token=Bearer+${token};${expires};path=/`;
+  // document.cookie = `username=${payload.user.name};${expires};path=/`;
+  // document.cookie = `email=${payload.user.email};${expires};path=/`;
 
   const tokenStoarageType = getTokenStorageType();
   xgenSetStorage('xgen:token', token, tokenStoarageType);
-  xgenSetStorage('xgen:menus', payload.menus);
-  xgenSetStorage('xgen:menu', payload.menus.items);
-  xgenSetStorage('xgen:user', payload.user);
+  // xgenSetStorage('xgen:menus', payload.menus);
+  // xgenSetStorage('xgen:menu', payload.menus.items);
+  // xgenSetStorage('xgen:user', payload.user);
 
-  if (payload.studio) {
-    // studio
+  // if (payload.studio) {
+  //   // studio
 
-    if (payload.studio.expires_at) {
-      newDate.setTime(payload.studio.expires_at * 1000);
-    } else {
-      newDate.setTime(newDate.getTime() + 24 * 60 * 60 * 1000);
-    }
-    expires = `expires=${newDate.toUTCString()}`;
-    document.cookie = `studio=${encodeURIComponent(payload.studio.token)};${expires};path=/`;
+  //   if (payload.studio.expires_at) {
+  //     newDate.setTime(payload.studio.expires_at * 1000);
+  //   } else {
+  //     newDate.setTime(newDate.getTime() + 24 * 60 * 60 * 1000);
+  //   }
+  //   expires = `expires=${newDate.toUTCString()}`;
+  //   document.cookie = `studio=${encodeURIComponent(payload.studio.token)};${expires};path=/`;
 
-    xgenSetStorage('xgen:studio', payload.studio, tokenStoarageType);
-  }
+  //   xgenSetStorage('xgen:studio', payload.studio, tokenStoarageType);
+  // }
 }
 export function setToken(tokenIn: string) {
   const token = encodeURIComponent(tokenIn);
@@ -145,36 +145,42 @@ export function setToken(tokenIn: string) {
   xgenSetStorage('xgen:token', token, tokenStoarageType);
 }
 export function getXgenToken(tokenIn?: string) {
+  const cookie = getCookie('__Host-access_token');
+  let token = null;
+  // trim Bearer+ in cookie
+  // check if the cookie is startwith Bearer+
+  if (cookie?.startsWith('Bearer+')) {
+    token = cookie?.substring(7);
+  }
+  if (token) {
+    return token;
+  }
+
   const tokenName = tokenIn || 'token';
   const stoarage_type = getTokenStorageType();
 
   const tokenObj = xgenGetStorage(`xgen:${tokenName}`, stoarage_type) as any;
 
-  let token = null;
   if (tokenObj) {
-    if (tokenObj && tokenName === 'studio') {
-      token = tokenObj.value?.token;
-    } else {
-      token = tokenObj.value;
-    }
+    token = tokenObj.value;
   }
-  if (token) {
-    setCookie(tokenName, token, 8);
-  } else {
-    // 需要确保当从xgen里退出后，本地的cookie也不能生效，两边的token进行同步
-    deleteCookie(tokenName);
-  }
+  // if (token) {
+  //   setCookie(tokenName, token, 8);
+  // } else {
+  //   // 需要确保当从xgen里退出后，本地的cookie也不能生效，两边的token进行同步
+  //   deleteCookie(tokenName);
+  // }
   return token;
 }
-function setCookie(name: string, value: string, hours: number) {
-  let expires = '';
-  if (hours) {
-    const date = new Date();
-    date.setTime(date.getTime() + hours * 60 * 60 * 1000);
-    expires = `; expires=${date.toUTCString()}`;
-  }
-  document.cookie = `${name}=${value || ''}${expires}; path=/`;
-}
+// function setCookie(name: string, value: string, hours: number) {
+//   let expires = '';
+//   if (hours) {
+//     const date = new Date();
+//     date.setTime(date.getTime() + hours * 60 * 60 * 1000);
+//     expires = `; expires=${date.toUTCString()}`;
+//   }
+//   document.cookie = `${name}=${value || ''}${expires}; path=/`;
+// }
 function deleteCookie(name: string) {
   document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:01 GMT;`;
 }

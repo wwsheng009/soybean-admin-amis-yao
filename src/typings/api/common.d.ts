@@ -66,11 +66,9 @@ declare namespace Api {
       buttons: string[];
     }
     interface CaptchaInfo {
-      captcha: Captcha;
-    }
-    interface Captcha {
-      id: string;
-      code: string;
+      captcha_id: string;
+      captcha_image: string;
+      captcha: string;
     }
   }
 

@@ -527,6 +527,8 @@ declare namespace App {
             agreement: string;
             protocol: string;
             policy: string;
+            userExist: string;
+            registerSuccess: string;
           };
           resetPwd: {
             title: string;

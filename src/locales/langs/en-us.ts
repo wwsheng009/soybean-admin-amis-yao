@@ -272,7 +272,9 @@ const local: App.I18n.Schema = {
         title: 'Register',
         agreement: 'I have read and agree to',
         protocol: '《User Agreement》',
-        policy: '《Privacy Policy》'
+        policy: '《Privacy Policy》',
+        userExist: 'User already exists',
+        registerSuccess: 'Registration successful'
       },
       resetPwd: {
         title: 'Reset Password'

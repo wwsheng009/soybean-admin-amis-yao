@@ -1,6 +1,6 @@
 import { computed } from 'vue';
 import { useCountDown, useLoading } from '@sa/hooks';
-import { REG_PHONE } from '@/constants/reg';
+import { REG_EMAIL, REG_PHONE } from '@/constants/reg';
 import { $t } from '@/locales';
 
 export function useCaptcha() {
@@ -22,7 +22,21 @@ export function useCaptcha() {
 
     return text;
   });
+  function isEmailValid(email: string) {
+    if (email.trim() === '') {
+      window.$message?.error?.($t('form.email.required'));
 
+      return false;
+    }
+
+    if (!REG_EMAIL.test(email)) {
+      window.$message?.error?.($t('form.email.invalid'));
+
+      return false;
+    }
+
+    return true;
+  }
   function isPhoneValid(phone: string) {
     if (phone.trim() === '') {
       window.$message?.error?.($t('form.phone.required'));
@@ -38,7 +52,26 @@ export function useCaptcha() {
 
     return true;
   }
+  async function getCaptchaByEmail(email: string) {
+    const valid = isEmailValid(email);
 
+    if (!valid || loading.value) {
+      return;
+    }
+
+    startLoading();
+
+    // request
+    await new Promise(resolve => {
+      setTimeout(resolve, 500);
+    });
+
+    window.$message?.success?.($t('page.login.codeLogin.sendCodeSuccess'));
+
+    start();
+
+    endLoading();
+  }
   async function getCaptcha(phone: string) {
     const valid = isPhoneValid(phone);
 
@@ -66,6 +99,7 @@ export function useCaptcha() {
     stop,
     isCounting,
     loading,
-    getCaptcha
+    getCaptcha,
+    getCaptchaByEmail
   };
 }

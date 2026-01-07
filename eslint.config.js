@@ -4,6 +4,7 @@ export default defineConfig(
   { vue: true, unocss: true, ignores: ['public/**/*', 'dist/**/*'] },
   {
     rules: {
+      'max-params': ['error', 5],
       'vue/multi-word-component-names': [
         'warn',
         {

@@ -268,7 +268,9 @@ const local: App.I18n.Schema = {
         title: '注册账号',
         agreement: '我已经仔细阅读并接受',
         protocol: '《用户协议》',
-        policy: '《隐私权政策》'
+        policy: '《隐私权政策》',
+        userExist: '用户已存在',
+        registerSuccess: '注册成功'
       },
       resetPwd: {
         title: '重置密码'
